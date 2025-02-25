@@ -11,7 +11,7 @@ type ProviderArgs struct {
 
 func createProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {
 	provider, err := github.NewProvider(ctx, "github", &github.ProviderArgs{
-		Owner: pulumi.String(args.owner),
+		Owner: pulumi.String(args.Owner),
 	})
 	if err != nil {
 		return nil, err

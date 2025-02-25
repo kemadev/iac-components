@@ -156,7 +156,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
 			PullRequest: github.RepositoryRulesetRulesPullRequestArgs{
-				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.requiredReviewersNext),
+				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.RequiredReviewersNext),
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
 				RequireCodeOwnerReview:         pulumi.Bool(true),
 				RequireLastPushApproval:        pulumi.Bool(true),
@@ -201,7 +201,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
 			PullRequest: github.RepositoryRulesetRulesPullRequestArgs{
-				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.requiredReviewersProd),
+				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.RequiredReviewersProd),
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
 				RequireCodeOwnerReview:         pulumi.Bool(true),
 				RequireLastPushApproval:        pulumi.Bool(true),
