@@ -18,7 +18,7 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	repo, err := createRepo(ctx, provider, args.Repository)
+	repo, err := createRepo(ctx, provider, args.Repository, args.Branches)
 	if err != nil {
 		return err
 	}

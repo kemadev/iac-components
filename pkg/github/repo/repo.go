@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -22,8 +23,9 @@ type RepositoryArgs struct {
 	IsTemplate bool
 }
 
-func createRepo(ctx *pulumi.Context, provider *github.Provider, args RepositoryArgs) (*github.Repository, error) {
-	repo, err := github.NewRepository(ctx, "repo", &github.RepositoryArgs{
+func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
+	repoName := util.FormatResourceName(ctx, "Repository")
+	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
 		// Keep name from import
 		// Name:        pulumi.String("repository-template"),
 
@@ -32,17 +34,17 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, args RepositoryA
 		// Allow non-admins read access from pulumi
 		IgnoreVulnerabilityAlertsDuringRead: pulumi.Bool(true),
 
-		Description: pulumi.String(args.Description),
-		HomepageUrl: pulumi.String(args.HomepageUrl),
+		Description: pulumi.String(argsRepo.Description),
+		HomepageUrl: pulumi.String(argsRepo.HomepageUrl),
 		Topics: func() pulumi.StringArrayInput {
 			var topics pulumi.StringArray
-			for _, topic := range args.Topics {
+			for _, topic := range argsRepo.Topics {
 				topics = append(topics, pulumi.String(topic))
 			}
 			return topics
 		}(),
-		Visibility: pulumi.String(args.Visibility),
-		IsTemplate: pulumi.Bool(args.IsTemplate == true),
+		Visibility: pulumi.String(argsRepo.Visibility),
+		IsTemplate: pulumi.Bool(argsRepo.IsTemplate == true),
 
 		AllowSquashMerge:         pulumi.Bool(true),
 		SquashMergeCommitTitle:   pulumi.String("PR_TITLE"),
@@ -70,14 +72,14 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, args RepositoryA
 		// Template:          pulumi.Bool(false),
 
 		VulnerabilityAlerts: func() pulumi.Bool {
-			if args.Visibility == "public" {
+			if argsRepo.Visibility == "public" {
 				return pulumi.Bool(true)
 			}
 			// Advanced Security is required for private repositories
 			return pulumi.Bool(false)
 		}(),
 		SecurityAndAnalysis: func() *github.RepositorySecurityAndAnalysisArgs {
-			if args.Visibility == "public" {
+			if argsRepo.Visibility == "public" {
 				return &github.RepositorySecurityAndAnalysisArgs{
 					SecretScanning: github.RepositorySecurityAndAnalysisSecretScanningArgs{
 						Status: pulumi.String("enabled"),
@@ -94,9 +96,10 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, args RepositoryA
 	if err != nil {
 		return nil, err
 	}
-	_, err = github.NewBranchDefault(ctx, "branch", &github.BranchDefaultArgs{
+	branchDefaultName := util.FormatResourceName(ctx, "Repository default branch")
+	_, err = github.NewBranchDefault(ctx, branchDefaultName, &github.BranchDefaultArgs{
 		Repository: repo.Name,
-		Branch:     pulumi.String("main"),
+		Branch:     pulumi.String(argsBranches.Default),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return nil, err
