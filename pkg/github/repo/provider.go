@@ -1,4 +1,4 @@
-package githubrepo
+package repo
 
 import (
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"

@@ -1,4 +1,4 @@
-package githubrepo
+package repo
 
 import (
 	"github.com/kemadev/iac-components/pkg/util"
