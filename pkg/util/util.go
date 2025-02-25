@@ -52,18 +52,17 @@ func CamelCase(str string) string {
 	return str
 }
 
-// Output a formatted resource name, camelCase, 140 characters or less, prefixed with project's name
+// Output a formatted resource name, kebab-case, 140 characters or less, prefixed with project's name
 // Should be used for most resources
 func FormatResourceName(ctx *pulumi.Context, name string) string {
-	// Use camelCase as it uses less characters than other more readable formats like kebab-case
-	resourceName := CamelCase(ctx.Project() + "-" + name)
+	resourceName := KebabCase(ctx.Project() + "-" + name)
 	if len(resourceName) > 140 {
 		resourceName = resourceName[:140]
 	}
 	return resourceName
 }
 
-// Output a formatted resource name, camelCase, 63 characters or less, prefixed with project's name
+// Output a formatted resource name, kebab-case, 63 characters or less, prefixed with project's name
 // Should be used resources with fewwer allowed characters in their names such as S3, RDS, ...
 func FormatResourceNameShort(ctx *pulumi.Context, name string) string {
 	resourceNameLong := FormatResourceName(ctx, name)
