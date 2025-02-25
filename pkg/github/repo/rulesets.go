@@ -1,7 +1,7 @@
 package githubrepo
 
 import (
-	"github.com/kemadev/iac-components/util"
+	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -12,7 +12,7 @@ type RulesetsArgs struct {
 }
 
 func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, environments TEnvironmentsCreated, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
-	rulesetBranchGlobalName := util.FormatResourceName("Repository branch ruleset global")
+	rulesetBranchGlobalName := util.FormatResourceName(ctx, "Repository branch ruleset global")
 	_, err := github.NewRepositoryRuleset(ctx, rulesetBranchGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
 		Name:        pulumi.String("branch-global"),
@@ -47,7 +47,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 		return err
 	}
 
-	rulesetTagGlobalName := util.FormatResourceName("Repository tag ruleset global")
+	rulesetTagGlobalName := util.FormatResourceName(ctx, "Repository tag ruleset global")
 	_, err = github.NewRepositoryRuleset(ctx, rulesetTagGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
 		Name:        pulumi.String("tag-global"),
@@ -67,7 +67,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 		return err
 	}
 
-	rulesetBranchEnvDev := util.FormatResourceName("Repository ruleset branch env dev")
+	rulesetBranchEnvDev := util.FormatResourceName(ctx, "Repository ruleset branch env dev")
 	_, err = github.NewRepositoryRuleset(ctx, rulesetBranchEnvDev, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
 		Name:        pulumi.String("branch-env-" + argsBranches.Dev),
@@ -117,7 +117,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 		return err
 	}
 
-	rulesetBranchEnvNext := util.FormatResourceName("Repository ruleset branch env next")
+	rulesetBranchEnvNext := util.FormatResourceName(ctx, "Repository ruleset branch env next")
 	_, err = github.NewRepositoryRuleset(ctx, rulesetBranchEnvNext, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
 		Name:        pulumi.String("branch-env-" + argsBranches.Next),
@@ -168,7 +168,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 		return err
 	}
 
-	rulesetBranchEnvProd := util.FormatResourceName("Repository ruleset branch env prod")
+	rulesetBranchEnvProd := util.FormatResourceName(ctx, "Repository ruleset branch env prod")
 	_, err = github.NewRepositoryRuleset(ctx, rulesetBranchEnvProd, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
 		Name:        pulumi.String("branch-env-" + argsBranches.Prod),

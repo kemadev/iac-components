@@ -1,7 +1,7 @@
 package githubrepo
 
 import (
-	"github.com/kemadev/iac-components/util"
+	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -20,7 +20,7 @@ type TEnvironmentsCreated struct {
 }
 
 func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsEnvs EnvsArgs, argsBranches BranchesArgs) (TEnvironmentsCreated, error) {
-	deploymentEnvironmentDevName := util.FormatResourceName("Deployment environment dev")
+	deploymentEnvironmentDevName := util.FormatResourceName(ctx, "Deployment environment dev")
 	deploymentEnvironmentDev, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentDevName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,
 		Environment:       pulumi.String(argsEnvs.Dev),
@@ -38,7 +38,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 		return TEnvironmentsCreated{}, err
 	}
 
-	deploymentEnvironmentNextName := util.FormatResourceName("Deployment environment next")
+	deploymentEnvironmentNextName := util.FormatResourceName(ctx, "Deployment environment next")
 	deploymentEnvironmentNext, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentNextName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,
 		Environment:       pulumi.String(argsEnvs.Next),
@@ -56,7 +56,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 		return TEnvironmentsCreated{}, err
 	}
 
-	deploymentEnvironmentProdName := util.FormatResourceName("Deployment environment prod")
+	deploymentEnvironmentProdName := util.FormatResourceName(ctx, "Deployment environment prod")
 	deploymentEnvironmentProd, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentProdName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,
 		Environment:       pulumi.String(argsEnvs.Prod),
@@ -74,7 +74,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 		return TEnvironmentsCreated{}, err
 	}
 
-	repositoryEnvironmentDeploymentPolicyDevName := util.FormatResourceName("Repository environment deployment policy dev")
+	repositoryEnvironmentDeploymentPolicyDevName := util.FormatResourceName(ctx, "Repository environment deployment policy dev")
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyDevName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentDev.Environment,
@@ -84,7 +84,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 		return TEnvironmentsCreated{}, err
 	}
 
-	repositoryEnvironmentDeploymentPolicyNextName := util.FormatResourceName("Repository environment deployment policy next")
+	repositoryEnvironmentDeploymentPolicyNextName := util.FormatResourceName(ctx, "Repository environment deployment policy next")
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyNextName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentNext.Environment,
@@ -94,7 +94,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 		return TEnvironmentsCreated{}, err
 	}
 
-	repositoryEnvironmentDeploymentPolicyProdName := util.FormatResourceName("Repository environment deployment policy prod")
+	repositoryEnvironmentDeploymentPolicyProdName := util.FormatResourceName(ctx, "Repository environment deployment policy prod")
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyProdName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentProd.Environment,
