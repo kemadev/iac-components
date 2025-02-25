@@ -6,7 +6,7 @@ import (
 )
 
 type ProviderArgs struct {
-	owner string
+	Owner string
 }
 
 func createProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {

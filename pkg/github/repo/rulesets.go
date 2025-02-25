@@ -7,8 +7,8 @@ import (
 )
 
 type RulesetsArgs struct {
-	requiredReviewersNext int
-	requiredReviewersProd int
+	RequiredReviewersNext int
+	RequiredReviewersProd int
 }
 
 func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, environments TEnvironmentsCreated, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
