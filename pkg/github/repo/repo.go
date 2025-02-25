@@ -59,7 +59,6 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		HasProjects:              pulumi.Bool(true),
 		HasWiki:                  pulumi.Bool(false),
 		HasDownloads:             pulumi.Bool(false),
-		Pages:                    github.RepositoryPagesArgs{},
 		Archived:                 pulumi.Bool(false),
 		WebCommitSignoffRequired: pulumi.Bool(false),
 
@@ -70,6 +69,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		// GitignoreTemplate: pulumi.String("Go"),
 		// LicenseTemplate:   pulumi.String("mpl-2.0"),
 		// Template:          pulumi.Bool(false),
+		// Pages: github.RepositoryPagesArgs{},
 
 		VulnerabilityAlerts: func() pulumi.Bool {
 			if argsRepo.Visibility == "public" {
