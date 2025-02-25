@@ -5,12 +5,12 @@ import (
 )
 
 type WrapperArgs struct {
-	provider   ProviderArgs
-	actions    ActionsArgs
-	branches   BranchesArgs
-	envs       EnvsArgs
-	rulesets   RulesetsArgs
-	repository RepositoryArgs
+	Provider   ProviderArgs
+	Actions    ActionsArgs
+	Branches   BranchesArgs
+	Envs       EnvsArgs
+	Rulesets   RulesetsArgs
+	Repository RepositoryArgs
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
