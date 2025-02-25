@@ -14,27 +14,27 @@ type WrapperArgs struct {
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
-	provider, err := createProvider(ctx, args.provider)
+	provider, err := createProvider(ctx, args.Provider)
 	if err != nil {
 		return err
 	}
-	repo, err := createRepo(ctx, provider, args.repository)
+	repo, err := createRepo(ctx, provider, args.Repository)
 	if err != nil {
 		return err
 	}
-	err = createBranches(ctx, provider, repo, args.branches)
+	err = createBranches(ctx, provider, repo, args.Branches)
 	if err != nil {
 		return err
 	}
-	envs, err := createEnvironments(ctx, provider, repo, args.envs, args.branches)
+	envs, err := createEnvironments(ctx, provider, repo, args.Envs, args.Branches)
 	if err != nil {
 		return err
 	}
-	err = createRulesets(ctx, provider, repo, envs, args.rulesets, args.branches)
+	err = createRulesets(ctx, provider, repo, envs, args.Rulesets, args.Branches)
 	if err != nil {
 		return err
 	}
-	err = createActions(ctx, provider, repo, args.actions)
+	err = createActions(ctx, provider, repo, args.Actions)
 	if err != nil {
 		return err
 	}
