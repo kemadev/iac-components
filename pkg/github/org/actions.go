@@ -54,7 +54,8 @@ func createActionsSetDefaults(args *ActionsArgs) {
 func createActions(ctx *pulumi.Context, provider *github.Provider, args ActionsArgs) error {
 	actionsOrganizationPermissionsName := util.FormatResourceName(ctx, "Actions organization permissions")
 	_, err := github.NewActionsOrganizationPermissions(ctx, actionsOrganizationPermissionsName, &github.ActionsOrganizationPermissionsArgs{
-		AllowedActions: pulumi.String("selected"),
+		AllowedActions:      pulumi.String("selected"),
+		EnabledRepositories: pulumi.String("all"),
 		AllowedActionsConfig: &github.ActionsOrganizationPermissionsAllowedActionsConfigArgs{
 			GithubOwnedAllowed: pulumi.Bool(true),
 			VerifiedAllowed:    pulumi.Bool(false),
