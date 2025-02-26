@@ -1,8 +1,6 @@
 package org
 
 import (
-	"slices"
-
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -13,17 +11,22 @@ type TeamArgs struct {
 	Description string
 	Privacy     string
 	ParentTeam  string
+	Members     []string
 }
 
 type TeamsArgs struct {
 	Teams []TeamArgs
 }
 
+const (
+	adminTeamName = "admins"
+)
+
 var (
 	TeamsDefaultArgs = TeamsArgs{
 		Teams: []TeamArgs{
 			{
-				Name:        "admins",
+				Name:        adminTeamName,
 				Description: "Full ccess everywhere",
 			},
 			{
@@ -47,26 +50,49 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 		args.Teams = TeamsDefaultArgs.Teams
 		return
 	}
-	for _, action := range TeamsDefaultArgs.Teams {
-		found := slices.Contains(args.Teams, action)
+	for _, team := range TeamsDefaultArgs.Teams {
+		found := false
+		for _, t := range args.Teams {
+			if team.Name == t.Name {
+				found = true
+			}
+		}
 		if !found {
-			args.Teams = append(args.Teams, action)
+			args.Teams = append(args.Teams, team)
 		}
 	}
 }
 
 func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams TeamsArgs) error {
-	for _, team := range argsTeams.Teams {
-		teamName := util.FormatResourceName(ctx, team.Name)
-		_, err := github.NewTeam(ctx, teamName, &github.TeamArgs{
-			Name:         pulumi.String(team.Name),
-			Description:  pulumi.String(team.Description),
+	for _, t := range argsTeams.Teams {
+		teamName := util.FormatResourceName(ctx, t.Name)
+		team, err := github.NewTeam(ctx, teamName, &github.TeamArgs{
+			Name:         pulumi.String(t.Name),
+			Description:  pulumi.String(t.Description),
 			Privacy:      pulumi.String("closed"),
-			ParentTeamId: pulumi.String(team.ParentTeam),
+			ParentTeamId: pulumi.String(t.ParentTeam),
 		}, pulumi.Provider(provider))
 		if err != nil {
 			return err
 		}
+		teamSettingsName := util.FormatResourceName(ctx, t.Name+" settings")
+		_, err = github.NewTeamSettings(ctx, teamSettingsName, &github.TeamSettingsArgs{
+			TeamId: team.ID(),
+			ReviewRequestDelegation: &github.TeamSettingsReviewRequestDelegationArgs{
+				MemberCount: pulumi.Int(1),
+				Algorithm:   pulumi.String("LOAD_BALANCE"),
+				Notify:      pulumi.Bool(false),
+			},
+		})
+		if err != nil {
+			return err
+		}
+	}
+	_, err := github.NewOrganizationSecurityManager(ctx, "some_team", &github.OrganizationSecurityManagerArgs{
+		TeamSlug: pulumi.String(adminTeamName),
+	})
+	if err != nil {
+		return err
 	}
 	return nil
 }
