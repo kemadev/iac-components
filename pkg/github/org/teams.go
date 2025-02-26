@@ -6,12 +6,17 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+type TeamMemberArgs struct {
+	Username string
+	Role     string
+}
+
 type TeamArgs struct {
 	Name        string
 	Description string
 	Privacy     string
 	ParentTeam  string
-	Members     []string
+	Members     TeamMemberArgs
 }
 
 type TeamsArgs struct {
@@ -88,6 +93,25 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 		}, pulumi.Provider(provider))
 		if err != nil {
 			return err
+		}
+		if t.Members != (TeamMemberArgs{}) {
+			teamMembersName := util.FormatResourceName(ctx, t.Name+" members")
+			_, err = github.NewTeamMembers(ctx, teamMembersName, &github.TeamMembersArgs{
+				TeamId: team.ID(),
+				Members: func() github.TeamMembersMemberArray {
+					var members github.TeamMembersMemberArray
+					for _, m := range []TeamMemberArgs{t.Members} {
+						members = append(members, &github.TeamMembersMemberArgs{
+							Username: pulumi.String(m.Username),
+							Role:     pulumi.String(m.Role),
+						})
+					}
+					return members
+				}(),
+			}, pulumi.Provider(provider))
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
