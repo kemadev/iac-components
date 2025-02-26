@@ -90,7 +90,8 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 			return err
 		}
 	}
-	_, err := github.NewOrganizationSecurityManager(ctx, "some_team", &github.OrganizationSecurityManagerArgs{
+	securityManagerName := util.FormatResourceName(ctx, "Security manager")
+	_, err := github.NewOrganizationSecurityManager(ctx, securityManagerName, &github.OrganizationSecurityManagerArgs{
 		TeamSlug: pulumi.String(maintainersTeamName),
 	}, pulumi.Provider(provider))
 	if err != nil {
