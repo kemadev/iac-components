@@ -91,7 +91,7 @@ func checkTeamMembersAreMembers(argsTeams TeamsArgs, argsMembers MembersArgs) er
 					}
 				}
 				if !found {
-					return fmt.Errorf("Team member %s in team %s is not set to be an organization member", m.Username, t.Name)
+					return fmt.Errorf("Team member %s in team %s is not also set to be an organization member", m.Username, t.Name)
 				}
 			}
 		}
