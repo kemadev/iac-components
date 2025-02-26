@@ -19,7 +19,9 @@ type TeamsArgs struct {
 }
 
 const (
-	adminTeamName = "admins"
+	adminTeamName       = "admins"
+	maintainersTeamName = "maintainers"
+	developersTeamName  = "developers"
 )
 
 var (
@@ -30,11 +32,11 @@ var (
 				Description: "Full ccess everywhere",
 			},
 			{
-				Name:        "maintainers",
+				Name:        maintainersTeamName,
 				Description: "Maintain permissions on all repositories",
 			},
 			{
-				Name:        "developers",
+				Name:        developersTeamName,
 				Description: "Parent team for all developers",
 			},
 		},
@@ -89,7 +91,7 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 		}
 	}
 	_, err := github.NewOrganizationSecurityManager(ctx, "some_team", &github.OrganizationSecurityManagerArgs{
-		TeamSlug: pulumi.String(adminTeamName),
+		TeamSlug: pulumi.String(maintainersTeamName),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return err
