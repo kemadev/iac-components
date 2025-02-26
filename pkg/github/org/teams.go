@@ -83,14 +83,14 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 				Algorithm:   pulumi.String("LOAD_BALANCE"),
 				Notify:      pulumi.Bool(false),
 			},
-		})
+		}, pulumi.Provider(provider))
 		if err != nil {
 			return err
 		}
 	}
 	_, err := github.NewOrganizationSecurityManager(ctx, "some_team", &github.OrganizationSecurityManagerArgs{
 		TeamSlug: pulumi.String(adminTeamName),
-	})
+	}, pulumi.Provider(provider))
 	if err != nil {
 		return err
 	}
