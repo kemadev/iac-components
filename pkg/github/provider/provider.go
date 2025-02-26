@@ -1,4 +1,4 @@
-package repo
+package provider
 
 import (
 	"github.com/kemadev/iac-components/pkg/util"
