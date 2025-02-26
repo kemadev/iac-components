@@ -79,15 +79,6 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		Archived:                 pulumi.Bool(false),
 		WebCommitSignoffRequired: pulumi.Bool(false),
 
-		// Unused fields
-		// MergeCommitTitle:   pulumi.String("PR_TITLE"),
-		// MergeCommitMessage: pulumi.String("PR_BODY"),
-		// AutoInit:           pulumi.Bool(true),
-		// GitignoreTemplate:  pulumi.String("Go"),
-		// LicenseTemplate:    pulumi.String("mpl-2.0"),
-		// Template:           pulumi.Bool(false),
-		// Pages:              github.RepositoryPagesArgs{},
-
 		VulnerabilityAlerts: func() pulumi.Bool {
 			if argsRepo.Visibility == "public" {
 				return pulumi.Bool(true)
@@ -121,5 +112,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 	if err != nil {
 		return nil, err
 	}
+
+	
 	return repo, nil
 }

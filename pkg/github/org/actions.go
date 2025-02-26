@@ -1,8 +1,6 @@
 package org
 
 import (
-	"slices"
-
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -43,12 +41,7 @@ func createActionsSetDefaults(args *ActionsArgs) {
 		args.Actions = ActionsDefaultActions
 		return
 	}
-	for _, action := range ActionsDefaultActions {
-		found := slices.Contains(args.Actions, action)
-		if !found {
-			args.Actions = append(args.Actions, action)
-		}
-	}
+	args.Actions = append(args.Actions, ActionsDefaultActions...)
 }
 
 func createActions(ctx *pulumi.Context, provider *github.Provider, args ActionsArgs) error {

@@ -58,14 +58,21 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 		return
 	}
 	for _, team := range TeamsDefaultArgs.Teams {
-		found := false
-		for _, t := range args.Teams {
-			if team.Name == t.Name {
-				found = true
+		for i, t := range args.Teams {
+			if t.Name == team.Name {
+				if t.Description == "" {
+					args.Teams[i].Description = team.Description
+				}
+				if t.Privacy == "" {
+					args.Teams[i].Privacy = team.Privacy
+				}
+				if t.ParentTeam == "" {
+					args.Teams[i].ParentTeam = team.ParentTeam
+				}
+				if t.Members == (TeamMemberArgs{}) {
+					args.Teams[i].Members = team.Members
+				}
 			}
-		}
-		if !found {
-			args.Teams = append(args.Teams, team)
 		}
 	}
 }
