@@ -23,7 +23,6 @@ func createProviderSetDefaults(args *ProviderArgs) {
 }
 
 func createProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {
-	createProviderSetDefaults(&args)
 	providerName := util.FormatResourceName(ctx, "Provider")
 	provider, err := github.NewProvider(ctx, providerName, &github.ProviderArgs{
 		Owner: pulumi.String(args.Owner),

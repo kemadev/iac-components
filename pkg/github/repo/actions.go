@@ -52,7 +52,6 @@ func createActionsSetDefaults(args *ActionsArgs) {
 }
 
 func createActions(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args ActionsArgs) error {
-	createActionsSetDefaults(&args)
 	actionsRepositoryPermissionsName := util.FormatResourceName(ctx, "Actions repository permissions")
 	_, err := github.NewActionsRepositoryPermissions(ctx, actionsRepositoryPermissionsName, &github.ActionsRepositoryPermissionsArgs{
 		Repository:     repo.Name,

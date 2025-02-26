@@ -38,7 +38,6 @@ func createBranchesSetDefaults(args *BranchesArgs) {
 }
 
 func createBranches(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args BranchesArgs) error {
-	createBranchesSetDefaults(&args)
 	branchDevName := util.FormatResourceName(ctx, "Branch dev")
 	_, err := github.NewBranch(ctx, branchDevName, &github.BranchArgs{
 		Repository: repo.Name,

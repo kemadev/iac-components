@@ -27,8 +27,7 @@ func createRulesetsSetDefaults(args *RulesetsArgs) {
 	}
 }
 
-func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, environments TEnvironmentsCreated, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
-	createRulesetsSetDefaults(&argsRulesets)
+func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
 	rulesetBranchGlobalName := util.FormatResourceName(ctx, "Repository branch ruleset global")
 	_, err := github.NewRepositoryRuleset(ctx, rulesetBranchGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,

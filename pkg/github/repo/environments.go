@@ -39,7 +39,6 @@ func createEnvironmentsSetDefaults(args *EnvsArgs) {
 }
 
 func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsEnvs EnvsArgs, argsBranches BranchesArgs) (TEnvironmentsCreated, error) {
-	createEnvironmentsSetDefaults(&argsEnvs)
 	deploymentEnvironmentDevName := util.FormatResourceName(ctx, "Deployment environment dev")
 	deploymentEnvironmentDev, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentDevName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,

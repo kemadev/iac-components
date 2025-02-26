@@ -41,7 +41,6 @@ func createRepositorySetDefaults(args *RepositoryArgs) {
 }
 
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
-	createRepositorySetDefaults(&argsRepo)
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
 		// Keep name from import
