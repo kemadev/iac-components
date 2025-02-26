@@ -6,310 +6,324 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository) error {
-	issueLabelsName := util.FormatResourceName(ctx, "Issue labels")
-	_, err := github.NewIssueLabels(ctx, issueLabelsName, &github.IssueLabelsArgs{
-		Repository: repo.Name,
-		Labels: github.IssueLabelsLabelArray{
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/docs"),
-				Color:       pulumi.String("1850c9"), // Dark Blue
-				Description: pulumi.String("Related to documentation"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/infra"),
-				Color:       pulumi.String("ff9900"), // Orange
-				Description: pulumi.String("Related to infrastructure"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/core"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Related to core functionality"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/workflows"),
-				Color:       pulumi.String("9b59b6"), // Purple
-				Description: pulumi.String("Related to GitHub workflows"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/dependencies"),
-				Color:       pulumi.String("1abc9c"), // Turquoise
-				Description: pulumi.String("Related to dependencies"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/external"),
-				Color:       pulumi.String("34495e"), // Dark Blue
-				Description: pulumi.String("Related to external services"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/frontend"),
-				Color:       pulumi.String("83ed5a"), // Light Green
-				Description: pulumi.String("Related to frontend"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/backend"),
-				Color:       pulumi.String("47a7b2"), // Light Blue
-				Description: pulumi.String("Related to backend"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/api"),
-				Color:       pulumi.String("27ae60"), // Dark Green
-				Description: pulumi.String("Related to API"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("area/data"),
-				Color:       pulumi.String("d68068"), // Light Red
-				Description: pulumi.String("Related to data"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/needs-triage"),
-				Color:       pulumi.String("a9eaf2"), // Light Turquoise
-				Description: pulumi.String("Needs triage, labeling, and planning"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/needs-reproduction"),
-				Color:       pulumi.String("8b58e2"), // Dark Purple
-				Description: pulumi.String("Needs to be reproduced and confirmed"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/needs-investigation"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Needs investigation and analysis"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/needs-info"),
-				Color:       pulumi.String("8e44ad"), // Dark Purple
-				Description: pulumi.String("Needs more information from parties involved"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/stale"),
-				Color:       pulumi.String("bdc3c7"), // Grey
-				Description: pulumi.String("Stale, no activity for a while"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/blocked"),
-				Color:       pulumi.String("5c6768"), // Dark Grey
-				Description: pulumi.String("Blocked, waiting for something"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/help-wanted"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Assistance from the community is needed"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/duplicate"),
-				Color:       pulumi.String("95a5a6"), // Light Grey
-				Description: pulumi.String("Already exists, duplicate"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/wont-fix"),
-				Color:       pulumi.String("7f8c8d"), // Dark Grey
-				Description: pulumi.String("Won't fix, not going to be addressed"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/work-in-progress"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Currently being worked on"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/up-for-grabs"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Ready for someone to take it"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("status/closed"),
-				Color:       pulumi.String("95a5a6"), // Light Grey
-				Description: pulumi.String("No further action planned"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("impact/low"),
-				Color:       pulumi.String("97c4aa"), // Light Green
-				Description: pulumi.String("Impact is low"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("impact/medium"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Impact is quite significant"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("impact/high"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Impact is critical and needs immediate attention"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("priority/P0"),
-				Color:       pulumi.String("e83c81"), // Pink
-				Description: pulumi.String("Critical, needs action immediately"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("priority/P1"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("High priority, needs action soon"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("priority/P2"),
-				Color:       pulumi.String("f39c12"), // Orange
-				Description: pulumi.String("Medium priority, needs action"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/bug"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Something is not working as expected"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/feature"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("New functionality or feature"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/question"),
-				Color:       pulumi.String("3498db"), // Blue
-				Description: pulumi.String("Question or inquiry"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/security"),
-				Color:       pulumi.String("c0392b"), // Dark Red
-				Description: pulumi.String("Security related / vulnerability, needs immediate attention"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/performance"),
-				Color:       pulumi.String("f39c12"), // Orange
-				Description: pulumi.String("Performance related"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("type/announcement"),
-				Color:       pulumi.String("#f1c40f"), // Yellow
-				Description: pulumi.String("Announcement or news"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("release/pending"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Release is pending"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("release/released"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Release has been completed"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("release/breaking"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Breaking changes, needs special attention"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/ios"),
-				Color:       pulumi.String("3498db"), // Blue
-				Description: pulumi.String("Concerns iOS platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/android"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Concerns Android platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/windows"),
-				Color:       pulumi.String("415dc1"), // Dark Blue
-				Description: pulumi.String("Concerns Windows platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/mac"),
-				Color:       pulumi.String("e0c6af"), // Light Brown
-				Description: pulumi.String("Concerns Mac platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/linux"),
-				Color:       pulumi.String("e2e18a"), // Light Yellow
-				Description: pulumi.String("Concerns Linux platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("platform/web"),
-				Color:       pulumi.String("607fb2"), // Dark Turquoise
-				Description: pulumi.String("Concerns Web (browser) platform"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("deploy/aws"),
-				Color:       pulumi.String("f39c12"), // Orange
-				Description: pulumi.String("Deployment is on AWS"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("deploy/azure"),
-				Color:       pulumi.String("3498db"), // Blue
-				Description: pulumi.String("Deployment is on Azure"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("deploy/gcp"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Deployment is on GCP"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("deploy/on-prem"),
-				Color:       pulumi.String("9b59b6"), // Purple
-				Description: pulumi.String("Deployment is on-premises"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/XS"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Estimated amount of work is extra small"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/S"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Estimated amount of work is small"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/M"),
-				Color:       pulumi.String("e67e22"), // Orange
-				Description: pulumi.String("Estimated amount of work is medium"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/L"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Estimated amount of work is large, might need more review"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/XL"),
-				Color:       pulumi.String("c0392b"), // Dark Red
-				Description: pulumi.String("Estimated amount of work is extra large, needs conscientious review"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("size/tbd"),
-				Color:       pulumi.String("95a5a6"), // Light Grey
-				Description: pulumi.String("Estimated amount of work is yet to be determined"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("complexity/low"),
-				Color:       pulumi.String("2ecc71"), // Light Green
-				Description: pulumi.String("Estimated complexity for the task is low"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("complexity/medium"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Estimated complexity for the task is medium"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("complexity/high"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Estimated complexity for the task is high, might need expert review"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("env/dev"),
-				Color:       pulumi.String("3498db"), // Blue
-				Description: pulumi.String("Concerns development environment"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("env/next"),
-				Color:       pulumi.String("f1c40f"), // Yellow
-				Description: pulumi.String("Concerns next environment"),
-			},
-			&github.IssueLabelsLabelArgs{
-				Name:        pulumi.String("env/prod"),
-				Color:       pulumi.String("e74c3c"), // Red
-				Description: pulumi.String("Concerns production environment, treat with care"),
-			},
+type IssueArgs struct {
+	Name        string
+	Color       string
+	Description string
+}
+
+var (
+	IssuesDefaultArgs = []IssueArgs{
+		{
+			Name:        "area/docs",
+			Color:       "1850c9", // Dark Blue
+			Description: "Related to documentation",
 		},
-	}, pulumi.Provider(provider))
-	if err != nil {
-		return err
+		{
+			Name:        "area/infra",
+			Color:       "ff9900", // Orange
+			Description: "Related to infrastructure",
+		},
+		{
+			Name:        "area/core",
+			Color:       "e74c3c", // Red
+			Description: "Related to core functionality",
+		},
+		{
+			Name:        "area/workflows",
+			Color:       "9b59b6", // Purple
+			Description: "Related to GitHub workflows",
+		},
+		{
+			Name:        "area/dependencies",
+			Color:       "1abc9c", // Turquoise
+			Description: "Related to dependencies",
+		},
+		{
+			Name:        "area/external",
+			Color:       "34495e", // Dark Blue
+			Description: "Related to external services",
+		},
+		{
+			Name:        "area/frontend",
+			Color:       "83ed5a", // Light Green
+			Description: "Related to frontend",
+		},
+		{
+			Name:        "area/backend",
+			Color:       "47a7b2", // Light Blue
+			Description: "Related to backend",
+		},
+		{
+			Name:        "area/api",
+			Color:       "27ae60", // Dark Green
+			Description: "Related to API",
+		},
+		{
+			Name:        "area/data",
+			Color:       "d68068", // Light Red
+			Description: "Related to data",
+		},
+		{
+			Name:        "status/needs-triage",
+			Color:       "a9eaf2", // Light Turquoise
+			Description: "Needs triage, labeling, and planning",
+		},
+		{
+			Name:        "status/needs-reproduction",
+			Color:       "8b58e2", // Dark Purple
+			Description: "Needs to be reproduced and confirmed",
+		},
+		{
+			Name:        "status/needs-investigation",
+			Color:       "f1c40f", // Yellow
+			Description: "Needs investigation and analysis",
+		},
+		{
+			Name:        "status/needs-info",
+			Color:       "8e44ad", // Dark Purple
+			Description: "Needs more information from parties involved",
+		},
+		{
+			Name:        "status/stale",
+			Color:       "bdc3c7", // Grey
+			Description: "Stale, no activity for a while",
+		},
+		{
+			Name:        "status/blocked",
+			Color:       "5c6768", // Dark Grey
+			Description: "Blocked, waiting for something",
+		},
+		{
+			Name:        "status/help-wanted",
+			Color:       "2ecc71", // Light Green
+			Description: "Assistance from the community is needed",
+		},
+		{
+			Name:        "status/duplicate",
+			Color:       "95a5a6", // Light Grey
+			Description: "Already exists, duplicate",
+		},
+		{
+			Name:        "status/wont-fix",
+			Color:       "7f8c8d", // Dark Grey
+			Description: "Won't fix, not going to be addressed",
+		},
+		{
+			Name:        "status/work-in-progress",
+			Color:       "f1c40f", // Yellow
+			Description: "Currently being worked on",
+		},
+		{
+			Name:        "status/up-for-grabs",
+			Color:       "2ecc71", // Light Green
+			Description: "Ready for someone to take it",
+		},
+		{
+			Name:        "status/closed",
+			Color:       "95a5a6", // Light Grey
+			Description: "No further action planned",
+		},
+		{
+			Name:        "impact/low",
+			Color:       "97c4aa", // Light Green
+			Description: "Impact is low",
+		},
+		{
+			Name:        "impact/medium",
+			Color:       "f1c40f", // Yellow
+			Description: "Impact is quite significant",
+		},
+		{
+			Name:        "impact/high",
+			Color:       "e74c3c", // Red
+			Description: "Impact is critical and needs immediate attention",
+		},
+		{
+			Name:        "priority/P0",
+			Color:       "e83c81", // Pink
+			Description: "Critical, needs action immediately",
+		},
+		{
+			Name:        "priority/P1",
+			Color:       "e74c3c", // Red
+			Description: "High priority, needs action soon",
+		},
+		{
+			Name:        "priority/P2",
+			Color:       "f39c12", // Orange
+			Description: "Medium priority, needs action",
+		},
+		{
+			Name:        "type/bug",
+			Color:       "e74c3c", // Red
+			Description: "Something is not working as expected",
+		},
+		{
+			Name:        "type/feature",
+			Color:       "2ecc71", // Light Green
+			Description: "New functionality or feature",
+		},
+		{
+			Name:        "type/question",
+			Color:       "3498db", // Blue
+			Description: "Question or inquiry",
+		},
+		{
+			Name:        "type/security",
+			Color:       "c0392b", // Dark Red
+			Description: "Security related / vulnerability, needs immediate attention",
+		},
+		{
+			Name:        "type/performance",
+			Color:       "f39c12", // Orange
+			Description: "Performance related",
+		},
+		{
+			Name:        "type/announcement",
+			Color:       "#f1c40f", // Yellow
+			Description: "Announcement or news",
+		},
+		{
+			Name:        "release/pending",
+			Color:       "f1c40f", // Yellow
+			Description: "Release is pending",
+		},
+		{
+			Name:        "release/released",
+			Color:       "2ecc71", // Light Green
+			Description: "Release has been completed",
+		},
+		{
+			Name:        "release/breaking",
+			Color:       "e74c3c", // Red
+			Description: "Breaking changes, needs special attention",
+		},
+		{
+			Name:        "platform/ios",
+			Color:       "3498db", // Blue
+			Description: "Concerns iOS platform",
+		},
+		{
+			Name:        "platform/android",
+			Color:       "2ecc71", // Light Green
+			Description: "Concerns Android platform",
+		},
+		{
+			Name:        "platform/windows",
+			Color:       "415dc1", // Dark Blue
+			Description: "Concerns Windows platform",
+		},
+		{
+			Name:        "platform/mac",
+			Color:       "e0c6af", // Light Brown
+			Description: "Concerns Mac platform",
+		},
+		{
+			Name:        "platform/linux",
+			Color:       "e2e18a", // Light Yellow
+			Description: "Concerns Linux platform",
+		},
+		{
+			Name:        "platform/web",
+			Color:       "607fb2", // Dark Turquoise
+			Description: "Concerns Web (browser) platform",
+		},
+		{
+			Name:        "deploy/aws",
+			Color:       "f39c12", // Orange
+			Description: "Deployment is on AWS",
+		},
+		{
+			Name:        "deploy/azure",
+			Color:       "3498db", // Blue
+			Description: "Deployment is on Azure",
+		},
+		{
+			Name:        "deploy/gcp",
+			Color:       "2ecc71", // Light Green
+			Description: "Deployment is on GCP",
+		},
+		{
+			Name:        "deploy/on-prem",
+			Color:       "9b59b6", // Purple
+			Description: "Deployment is on-premises",
+		},
+		{
+			Name:        "size/XS",
+			Color:       "2ecc71", // Light Green
+			Description: "Estimated amount of work is extra small",
+		},
+		{
+			Name:        "size/S",
+			Color:       "f1c40f", // Yellow
+			Description: "Estimated amount of work is small",
+		},
+		{
+			Name:        "size/M",
+			Color:       "e67e22", // Orange
+			Description: "Estimated amount of work is medium",
+		},
+		{
+			Name:        "size/L",
+			Color:       "e74c3c", // Red
+			Description: "Estimated amount of work is large, might need more review",
+		},
+		{
+			Name:        "size/XL",
+			Color:       "c0392b", // Dark Red
+			Description: "Estimated amount of work is extra large, needs conscientious review",
+		},
+		{
+			Name:        "size/tbd",
+			Color:       "95a5a6", // Light Grey
+			Description: "Estimated amount of work is yet to be determined",
+		},
+		{
+			Name:        "complexity/low",
+			Color:       "2ecc71", // Light Green
+			Description: "Estimated complexity for the task is low",
+		},
+		{
+			Name:        "complexity/medium",
+			Color:       "f1c40f", // Yellow
+			Description: "Estimated complexity for the task is medium",
+		},
+		{
+			Name:        "complexity/high",
+			Color:       "e74c3c", // Red
+			Description: "Estimated complexity for the task is high, might need expert review",
+		},
+		{
+			Name:        "env/dev",
+			Color:       "3498db", // Blue
+			Description: "Concerns development environment",
+		},
+		{
+			Name:        "env/next",
+			Color:       "f1c40f", // Yellow
+			Description: "Concerns next environment",
+		},
+		{
+			Name:        "env/prod",
+			Color:       "e74c3c", // Red
+			Description: "Concerns production environment, treat with care",
+		},
+	}
+)
+
+func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository) error {
+	for _, issueLabel := range IssuesDefaultArgs {
+		issueLabelName := util.FormatResourceName(ctx, issueLabel.Name)
+		_, err := github.NewIssueLabel(ctx, issueLabelName, &github.IssueLabelArgs{
+			Repository:  repo.Name,
+			Name:        pulumi.String(issueLabel.Name),
+			Color:       pulumi.String(issueLabel.Color),
+			Description: pulumi.String(issueLabel.Description),
+		}, pulumi.Provider(provider))
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
