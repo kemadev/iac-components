@@ -181,7 +181,7 @@ var (
 		},
 		{
 			Name:        "type/announcement",
-			Color:       "#f1c40f", // Yellow
+			Color:       "f1c40f", // Yellow
 			Description: "Announcement or news",
 		},
 		{
