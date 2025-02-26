@@ -34,7 +34,7 @@ var (
 		Teams: []TeamArgs{
 			{
 				Name:        adminTeamName,
-				Description: "Full ccess everywhere",
+				Description: "Full access everywhere",
 			},
 			{
 				Name:        maintainersTeamName,
