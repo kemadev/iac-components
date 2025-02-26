@@ -13,7 +13,32 @@ type BranchesArgs struct {
 	Default string
 }
 
+var (
+	BranchesDefaultArgs = BranchesArgs{
+		Dev:     "dev",
+		Next:    "next",
+		Prod:    "main",
+		Default: "main",
+	}
+)
+
+func createBranchesSetDefaults(args *BranchesArgs) {
+	if args.Dev == "" {
+		args.Dev = BranchesDefaultArgs.Dev
+	}
+	if args.Next == "" {
+		args.Next = BranchesDefaultArgs.Next
+	}
+	if args.Prod == "" {
+		args.Prod = BranchesDefaultArgs.Prod
+	}
+	if args.Default == "" {
+		args.Default = BranchesDefaultArgs.Default
+	}
+}
+
 func createBranches(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args BranchesArgs) error {
+	createBranchesSetDefaults(&args)
 	branchDevName := util.FormatResourceName(ctx, "Branch dev")
 	_, err := github.NewBranch(ctx, branchDevName, &github.BranchArgs{
 		Repository: repo.Name,

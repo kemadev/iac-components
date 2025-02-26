@@ -1,10 +1,11 @@
 package repo
 
 import (
+	"slices"
+
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"slices"
 )
 
 type ActionsArgs struct {
@@ -48,7 +49,6 @@ func createActionsSetDefaults(args *ActionsArgs) {
 			args.Actions = append(args.Actions, action)
 		}
 	}
-	return
 }
 
 func createActions(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args ActionsArgs) error {

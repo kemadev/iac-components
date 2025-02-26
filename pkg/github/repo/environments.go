@@ -7,10 +7,9 @@ import (
 )
 
 type EnvsArgs struct {
-	Dev     string
-	Next    string
-	Prod    string
-	Default string
+	Dev  string
+	Next string
+	Prod string
 }
 
 type TEnvironmentsCreated struct {
@@ -19,7 +18,28 @@ type TEnvironmentsCreated struct {
 	prod *github.RepositoryEnvironment
 }
 
+var (
+	EnvsDefaultArgs = EnvsArgs{
+		Dev:  "dev",
+		Next: "next",
+		Prod: "prod",
+	}
+)
+
+func createEnvironmentsSetDefaults(args *EnvsArgs) {
+	if args.Dev == "" {
+		args.Dev = EnvsDefaultArgs.Dev
+	}
+	if args.Next == "" {
+		args.Next = EnvsDefaultArgs.Next
+	}
+	if args.Prod == "" {
+		args.Prod = EnvsDefaultArgs.Prod
+	}
+}
+
 func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsEnvs EnvsArgs, argsBranches BranchesArgs) (TEnvironmentsCreated, error) {
+	createEnvironmentsSetDefaults(&argsEnvs)
 	deploymentEnvironmentDevName := util.FormatResourceName(ctx, "Deployment environment dev")
 	deploymentEnvironmentDev, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentDevName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,

@@ -11,7 +11,24 @@ type RulesetsArgs struct {
 	RequiredReviewersProd int
 }
 
+var (
+	RulesetsDefaultArgs = RulesetsArgs{
+		RequiredReviewersNext: 1,
+		RequiredReviewersProd: 1,
+	}
+)
+
+func createRulesetsSetDefaults(args *RulesetsArgs) {
+	if args.RequiredReviewersNext == 0 {
+		args.RequiredReviewersNext = RulesetsDefaultArgs.RequiredReviewersNext
+	}
+	if args.RequiredReviewersProd == 0 {
+		args.RequiredReviewersProd = RulesetsDefaultArgs.RequiredReviewersProd
+	}
+}
+
 func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, environments TEnvironmentsCreated, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
+	createRulesetsSetDefaults(&argsRulesets)
 	rulesetBranchGlobalName := util.FormatResourceName(ctx, "Repository branch ruleset global")
 	_, err := github.NewRepositoryRuleset(ctx, rulesetBranchGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,

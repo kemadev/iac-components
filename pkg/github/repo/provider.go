@@ -10,7 +10,20 @@ type ProviderArgs struct {
 	Owner string
 }
 
+var (
+	ProviderDefaultArgs = ProviderArgs{
+		Owner: "kemadev",
+	}
+)
+
+func createProviderSetDefaults(args *ProviderArgs) {
+	if args.Owner == "" {
+		args.Owner = ProviderDefaultArgs.Owner
+	}
+}
+
 func createProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {
+	createProviderSetDefaults(&args)
 	providerName := util.FormatResourceName(ctx, "Provider")
 	provider, err := github.NewProvider(ctx, providerName, &github.ProviderArgs{
 		Owner: pulumi.String(args.Owner),
