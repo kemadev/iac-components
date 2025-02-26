@@ -6,21 +6,24 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+type DirectMember struct {
+	Username string
+	Role     string
+}
+
+type Team struct {
+	Name string
+	Role string
+}
+
 type RepositoryArgs struct {
-	// Repository description
-	// - required
-	Description string
-	// Repository homepage URL
-	HomepageUrl string
-	// Repository topics
-	// - required
-	Topics []string
-	// Repository visibility
-	// - required
-	Visibility string
-	// Repository is a template
-	// - false by default
-	IsTemplate bool
+	Description   string
+	HomepageUrl   string
+	Topics        []string
+	Visibility    string
+	IsTemplate    bool
+	Teams         []Team
+	DirectMembers []DirectMember
 }
 
 var (
@@ -113,6 +116,31 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		return nil, err
 	}
 
-	
+	_, err = github.NewRepositoryCollaborators(ctx, "some_repo_collaborators", &github.RepositoryCollaboratorsArgs{
+		Repository: repo.Name,
+		Users: func() github.RepositoryCollaboratorsUserArray {
+			var members github.RepositoryCollaboratorsUserArray
+			for _, m := range argsRepo.DirectMembers {
+				members = append(members, &github.RepositoryCollaboratorsUserArgs{
+					Username:   pulumi.String(m.Username),
+					Permission: pulumi.String(m.Role),
+				})
+			}
+			return members
+		}(),
+		Teams: func() github.RepositoryCollaboratorsTeamArray {
+			var teams github.RepositoryCollaboratorsTeamArray
+			for _, t := range argsRepo.Teams {
+				teams = append(teams, &github.RepositoryCollaboratorsTeamArgs{
+					TeamId:     pulumi.String(t.Name),
+					Permission: pulumi.String(t.Role),
+				})
+			}
+			return teams
+		}(),
+	})
+	if err != nil {
+		return nil, err
+	}
 	return repo, nil
 }
