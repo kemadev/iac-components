@@ -138,7 +138,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 			}
 			return teams
 		}(),
-	})
+	}, pulumi.Provider(provider))
 	if err != nil {
 		return nil, err
 	}
