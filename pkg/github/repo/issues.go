@@ -328,15 +328,17 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	}
 	ctx.Log.Info("Created issue labels", nil)
 	milestoneName := util.FormatResourceName(ctx, "Project init milestone")
+	ctx.Log.Info("Creating milestone", nil)
 	milestone, err := github.NewRepositoryMilestone(ctx, milestoneName, &github.RepositoryMilestoneArgs{
 		Repository:  repo.Name,
 		Title:       pulumi.String("Project initialization"),
 		Description: pulumi.String("Initial setup and configuration of the repository"),
 	}, pulumi.Provider(provider))
+	ctx.Log.Info("Created milestone", nil)
 	if err != nil {
 		return err
 	}
-	ctx.Log.Info("Created milestone", nil)
+	ctx.Log.Info("Creating issue", nil)
 	issueName := util.FormatResourceName(ctx, "Project init issue")
 	_, err = github.NewIssue(ctx, issueName, &github.IssueArgs{
 		Repository:      repo.Name,
