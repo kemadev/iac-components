@@ -1,6 +1,8 @@
 package org
 
 import (
+	"fmt"
+
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -77,7 +79,31 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 	}
 }
 
-func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams TeamsArgs) error {
+func checkTeamMembersAreMembers(argsTeams TeamsArgs, argsMembers MembersArgs) error {
+	for _, t := range argsTeams.Teams {
+		if t.Members != (TeamMemberArgs{}) {
+			for _, m := range []TeamMemberArgs{t.Members} {
+				found := false
+				for _, member := range argsMembers.Members {
+					if m.Username == member.Username {
+						found = true
+						break
+					}
+				}
+				if !found {
+					return fmt.Errorf("Team member %s in team %s is not a member", m.Username, t.Name)
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams TeamsArgs, argsMembers MembersArgs) error {
+	err := checkTeamMembersAreMembers(argsTeams, argsMembers)
+	if err != nil {
+		return err
+	}
 	for _, t := range argsTeams.Teams {
 		teamName := util.FormatResourceName(ctx, "team "+t.Name)
 		team, err := github.NewTeam(ctx, teamName, &github.TeamArgs{
@@ -102,16 +128,6 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 			return err
 		}
 		if t.Members != (TeamMemberArgs{}) {
-			for _, m := range []TeamMemberArgs{t.Members} {
-				membershipName := util.FormatResourceName(ctx, "membership for "+m.Username)
-				_, err := github.NewMembership(ctx, membershipName, &github.MembershipArgs{
-					Username: pulumi.String(m.Username),
-					Role:     pulumi.String("member"),
-				}, pulumi.Provider(provider))
-				if err != nil {
-					return err
-				}
-			}
 			teamMembersName := util.FormatResourceName(ctx, "team "+t.Name+" members")
 			_, err = github.NewTeamMembers(ctx, teamMembersName, &github.TeamMembersArgs{
 				TeamId: team.ID(),

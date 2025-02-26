@@ -10,6 +10,7 @@ type WrapperArgs struct {
 	Settings SettingsArgs
 	Teams    TeamsArgs
 	Actions  ActionsArgs
+	Members  MembersArgs
 }
 
 func setDefaultArgs(args *WrapperArgs) {
@@ -28,7 +29,11 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createTeams(ctx, provider, args.Teams)
+	err = createMembers(ctx, provider, args.Members)
+	if err != nil {
+		return err
+	}
+	err = createTeams(ctx, provider, args.Teams, args.Members)
 	if err != nil {
 		return err
 	}
