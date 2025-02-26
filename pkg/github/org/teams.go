@@ -102,6 +102,16 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 			return err
 		}
 		if t.Members != (TeamMemberArgs{}) {
+			for _, m := range []TeamMemberArgs{t.Members} {
+				membershipName := util.FormatResourceName(ctx, "membership for "+m.Username)
+				_, err := github.NewMembership(ctx, membershipName, &github.MembershipArgs{
+					Username: pulumi.String(m.Username),
+					Role:     pulumi.String("member"),
+				})
+				if err != nil {
+					return err
+				}
+			}
 			teamMembersName := util.FormatResourceName(ctx, "team "+t.Name+" members")
 			_, err = github.NewTeamMembers(ctx, teamMembersName, &github.TeamMembersArgs{
 				TeamId: team.ID(),
