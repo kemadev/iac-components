@@ -72,7 +72,7 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 
 func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams TeamsArgs) error {
 	for _, t := range argsTeams.Teams {
-		teamName := util.FormatResourceName(ctx, t.Name)
+		teamName := util.FormatResourceName(ctx, "team "+t.Name)
 		team, err := github.NewTeam(ctx, teamName, &github.TeamArgs{
 			Name:         pulumi.String(t.Name),
 			Description:  pulumi.String(t.Description),
@@ -82,7 +82,7 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 		if err != nil {
 			return err
 		}
-		teamSettingsName := util.FormatResourceName(ctx, t.Name+" settings")
+		teamSettingsName := util.FormatResourceName(ctx, "team "+t.Name+" settings")
 		_, err = github.NewTeamSettings(ctx, teamSettingsName, &github.TeamSettingsArgs{
 			TeamId: team.ID(),
 			ReviewRequestDelegation: &github.TeamSettingsReviewRequestDelegationArgs{
@@ -95,7 +95,7 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 			return err
 		}
 		if t.Members != (TeamMemberArgs{}) {
-			teamMembersName := util.FormatResourceName(ctx, t.Name+" members")
+			teamMembersName := util.FormatResourceName(ctx, "team "+t.Name+" members")
 			_, err = github.NewTeamMembers(ctx, teamMembersName, &github.TeamMembersArgs{
 				TeamId: team.ID(),
 				Members: func() github.TeamMembersMemberArray {
