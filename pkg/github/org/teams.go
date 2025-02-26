@@ -83,7 +83,7 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 			ReviewRequestDelegation: &github.TeamSettingsReviewRequestDelegationArgs{
 				MemberCount: pulumi.Int(1),
 				Algorithm:   pulumi.String("LOAD_BALANCE"),
-				Notify:      pulumi.Bool(false),
+				Notify:      pulumi.Bool(true),
 			},
 		}, pulumi.Provider(provider))
 		if err != nil {
