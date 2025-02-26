@@ -314,18 +314,18 @@ var (
 
 func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository) error {
 	// github.NewIssueLabels is too inconsistent, thus creation is done one by one
-	for _, issueLabel := range IssuesDefaultArgs {
-		issueLabelName := util.FormatResourceName(ctx, issueLabel.Name)
-		_, err := github.NewIssueLabel(ctx, issueLabelName, &github.IssueLabelArgs{
-			Repository:  repo.Name,
-			Name:        pulumi.String(issueLabel.Name),
-			Color:       pulumi.String(issueLabel.Color),
-			Description: pulumi.String(issueLabel.Description),
-		}, pulumi.Provider(provider))
-		if err != nil {
-			return err
-		}
-	}
+	// for _, issueLabel := range IssuesDefaultArgs {
+	// 	issueLabelName := util.FormatResourceName(ctx, issueLabel.Name)
+	// 	_, err := github.NewIssueLabel(ctx, issueLabelName, &github.IssueLabelArgs{
+	// 		Repository:  repo.Name,
+	// 		Name:        pulumi.String(issueLabel.Name),
+	// 		Color:       pulumi.String(issueLabel.Color),
+	// 		Description: pulumi.String(issueLabel.Description),
+	// 	}, pulumi.Provider(provider))
+	// 	if err != nil {
+	// 		return err
+	// 	}
+	// }
 	milestoneName := util.FormatResourceName(ctx, "Project init milestone")
 	milestone, err := github.NewRepositoryMilestone(ctx, milestoneName, &github.RepositoryMilestoneArgs{
 		Repository:  repo.Name,
