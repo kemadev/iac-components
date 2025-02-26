@@ -23,7 +23,24 @@ type RepositoryArgs struct {
 	IsTemplate bool
 }
 
+var (
+	RepositoryDefaultArgs = RepositoryArgs{
+		Visibility: "private",
+		IsTemplate: false,
+	}
+)
+
+func createRepositorySetDefaults(args *RepositoryArgs) {
+	if args.Visibility == "" {
+		args.Visibility = RepositoryDefaultArgs.Visibility
+	}
+	if args.IsTemplate == false {
+		args.IsTemplate = RepositoryDefaultArgs.IsTemplate
+	}
+}
+
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
+	createRepositorySetDefaults(&argsRepo)
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
 		// Keep name from import
