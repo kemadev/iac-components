@@ -17,7 +17,7 @@ var (
 		RequiredReviewersProd: 1,
 	}
 	RequiredStatusChecks = []string{
-		"Docker - CI / Docker - CI / Lint Dockerfiles",
+		"Go",
 	}
 )
 
@@ -174,19 +174,6 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
-			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks: func() github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray {
-					var checks github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray
-					for _, check := range RequiredStatusChecks {
-						checks = append(checks, &github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-							Context: pulumi.String(check),
-						})
-					}
-					return checks
-				}(),
-				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
-				DoNotEnforceOnCreate:             pulumi.Bool(true),
-			},
 			PullRequest: github.RepositoryRulesetRulesPullRequestArgs{
 				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.RequiredReviewersNext),
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
@@ -232,16 +219,6 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
-			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
-				RequiredChecks: func() github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray {
-					var checks github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray
-					for _, check := range RequiredStatusChecks {
-						checks = append(checks, &github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
-							Context: pulumi.String(check),
-						})
-					}
-					return checks
-				}(),
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
 				DoNotEnforceOnCreate:             pulumi.Bool(true),
 			},
