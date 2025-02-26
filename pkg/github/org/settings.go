@@ -73,8 +73,6 @@ func createSettings(ctx *pulumi.Context, provider *github.Provider, argsSettings
 		MembersCanForkPrivateRepositories:                  pulumi.Bool(true),
 		WebCommitSignoffRequired:                           pulumi.Bool(false),
 
-		AdvancedSecurityEnabledForNewRepositories:             pulumi.Bool(true),
-		MembersCanCreateInternalRepositories:                  pulumi.Bool(true),
 		SecretScanningEnabledForNewRepositories:               pulumi.Bool(true),
 		SecretScanningPushProtectionEnabledForNewRepositories: pulumi.Bool(true),
 	}, pulumi.Provider(provider))
