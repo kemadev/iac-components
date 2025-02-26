@@ -329,6 +329,7 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	milestoneName := util.FormatResourceName(ctx, "Project init milestone")
 	milestone, err := github.NewRepositoryMilestone(ctx, milestoneName, &github.RepositoryMilestoneArgs{
 		Repository:  repo.Name,
+		// Provider is configured to be the owner of the repository
 		Owner:       provider.Owner.Elem(),
 		Title:       pulumi.String("Project initialization"),
 		Description: pulumi.String("Initial setup and configuration of the repository"),

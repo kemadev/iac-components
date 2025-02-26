@@ -16,13 +16,13 @@ var (
 	}
 )
 
-func createProviderSetDefaults(args *ProviderArgs) {
+func ProviderSetDefaults(args *ProviderArgs) {
 	if args.Owner == "" {
 		args.Owner = ProviderDefaultArgs.Owner
 	}
 }
 
-func createProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {
+func NewProvider(ctx *pulumi.Context, args ProviderArgs) (*github.Provider, error) {
 	providerName := util.FormatResourceName(ctx, "Provider")
 	provider, err := github.NewProvider(ctx, providerName, &github.ProviderArgs{
 		Owner: pulumi.String(args.Owner),

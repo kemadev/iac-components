@@ -1,11 +1,12 @@
 package repo
 
 import (
+	p "github.com/kemadev/iac-components/pkg/github/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type WrapperArgs struct {
-	Provider   ProviderArgs
+	Provider   p.ProviderArgs
 	Actions    ActionsArgs
 	Branches   BranchesArgs
 	Envs       EnvsArgs
@@ -14,7 +15,7 @@ type WrapperArgs struct {
 }
 
 func setDefaultArgs(args *WrapperArgs) {
-	createProviderSetDefaults(&args.Provider)
+	p.ProviderSetDefaults(&args.Provider)
 	createActionsSetDefaults(&args.Actions)
 	createBranchesSetDefaults(&args.Branches)
 	createEnvironmentsSetDefaults(&args.Envs)
@@ -24,7 +25,7 @@ func setDefaultArgs(args *WrapperArgs) {
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	setDefaultArgs(&args)
-	provider, err := createProvider(ctx, args.Provider)
+	provider, err := p.NewProvider(ctx, args.Provider)
 	if err != nil {
 		return err
 	}
