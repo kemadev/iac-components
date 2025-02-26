@@ -24,9 +24,9 @@ type TeamsArgs struct {
 }
 
 const (
-	adminTeamName       = "admins"
-	maintainersTeamName = "maintainers"
-	developersTeamName  = "developers"
+	AdminTeamName       = "admins"
+	MaintainersTeamName = "maintainers"
+	DevelopersTeamName  = "developers"
 )
 
 var (
