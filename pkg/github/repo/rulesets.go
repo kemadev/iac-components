@@ -17,7 +17,7 @@ var (
 		RequiredReviewersProd: 1,
 	}
 	RequiredStatusChecks = []string{
-		"Go",
+		"Docker - CI / Docker - CI / Lint Dockerfiles",
 	}
 )
 
