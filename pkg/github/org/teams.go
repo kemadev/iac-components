@@ -107,7 +107,7 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 				_, err := github.NewMembership(ctx, membershipName, &github.MembershipArgs{
 					Username: pulumi.String(m.Username),
 					Role:     pulumi.String("member"),
-				})
+				}, pulumi.Provider(provider))
 				if err != nil {
 					return err
 				}
