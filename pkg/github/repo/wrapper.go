@@ -17,6 +17,7 @@ type WrapperArgs struct {
 func setDefaultArgs(args *WrapperArgs) {
 	p.SetDefaults(&args.Provider)
 	createActionsSetDefaults(&args.Actions)
+	createActionsSetDefaults(&args.Actions)
 	createBranchesSetDefaults(&args.Branches)
 	createEnvironmentsSetDefaults(&args.Envs)
 	createRulesetsSetDefaults(&args.Rulesets)
