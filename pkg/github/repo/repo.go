@@ -34,6 +34,7 @@ func createRepositorySetDefaults(args *RepositoryArgs) {
 	if args.Visibility == "" {
 		args.Visibility = RepositoryDefaultArgs.Visibility
 	}
+	// actually useless, but for consistency
 	if args.IsTemplate == false {
 		args.IsTemplate = RepositoryDefaultArgs.IsTemplate
 	}
