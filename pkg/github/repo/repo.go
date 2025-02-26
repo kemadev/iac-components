@@ -116,7 +116,8 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		return nil, err
 	}
 
-	_, err = github.NewRepositoryCollaborators(ctx, "some_repo_collaborators", &github.RepositoryCollaboratorsArgs{
+	repoCollaboratorsName := util.FormatResourceName(ctx, "Repository collaborators")
+	_, err = github.NewRepositoryCollaborators(ctx, repoCollaboratorsName, &github.RepositoryCollaboratorsArgs{
 		Repository: repo.Name,
 		Users: func() github.RepositoryCollaboratorsUserArray {
 			var members github.RepositoryCollaboratorsUserArray
