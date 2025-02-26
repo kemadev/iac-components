@@ -16,9 +16,6 @@ var (
 		RequiredReviewersNext: 1,
 		RequiredReviewersProd: 1,
 	}
-	RequiredStatusChecks = []string{
-		"Go",
-	}
 )
 
 func createRulesetsSetDefaults(args *RulesetsArgs) {
@@ -219,9 +216,6 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
-				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
-				DoNotEnforceOnCreate:             pulumi.Bool(true),
-			},
 			PullRequest: github.RepositoryRulesetRulesPullRequestArgs{
 				RequiredApprovingReviewCount:   pulumi.Int(argsRulesets.RequiredReviewersProd),
 				DismissStaleReviewsOnPush:      pulumi.Bool(true),
