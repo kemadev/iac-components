@@ -315,8 +315,8 @@ var (
 func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository) error {
 	// github.NewIssueLabels is too inconsistent, thus creation is done one by one
 	for _, issueLabel := range IssuesDefaultArgs {
-		issueLabelName := util.FormatResourceName(ctx, issueLabel.Name)
-		_, err := github.NewIssueLabel(ctx, "Issue label "+issueLabelName, &github.IssueLabelArgs{
+		issueLabelName := util.FormatResourceName(ctx, "Issue label "+issueLabel.Name)
+		_, err := github.NewIssueLabel(ctx, issueLabelName, &github.IssueLabelArgs{
 			Repository:  repo.Name,
 			Name:        pulumi.String(issueLabel.Name),
 			Color:       pulumi.String(issueLabel.Color),
