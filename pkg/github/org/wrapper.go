@@ -1,4 +1,4 @@
-package repo
+package org
 
 import (
 	p "github.com/kemadev/iac-components/pkg/github/provider"
