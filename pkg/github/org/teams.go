@@ -33,15 +33,15 @@ var (
 	TeamsDefaultArgs = TeamsArgs{
 		Teams: []TeamArgs{
 			{
-				Name:        adminTeamName,
+				Name:        AdminTeamName,
 				Description: "Full access everywhere",
 			},
 			{
-				Name:        maintainersTeamName,
+				Name:        MaintainersTeamName,
 				Description: "Maintain permissions on all repositories",
 			},
 			{
-				Name:        developersTeamName,
+				Name:        DevelopersTeamName,
 				Description: "Parent team for all developers",
 			},
 		},
