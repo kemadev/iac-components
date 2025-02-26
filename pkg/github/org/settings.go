@@ -77,7 +77,7 @@ func createSettings(ctx *pulumi.Context, provider *github.Provider, argsSettings
 		MembersCanCreateInternalRepositories:                  pulumi.Bool(true),
 		SecretScanningEnabledForNewRepositories:               pulumi.Bool(true),
 		SecretScanningPushProtectionEnabledForNewRepositories: pulumi.Bool(true),
-	})
+	}, pulumi.Provider(provider))
 	if err != nil {
 		return err
 	}
