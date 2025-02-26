@@ -18,7 +18,7 @@ type TeamArgs struct {
 	Description string
 	Privacy     string
 	ParentTeam  string
-	Members     TeamMemberArgs
+	Members     []TeamMemberArgs
 }
 
 type TeamsArgs struct {
@@ -71,7 +71,7 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 				if t.ParentTeam == "" {
 					args.Teams[i].ParentTeam = team.ParentTeam
 				}
-				if t.Members == (TeamMemberArgs{}) {
+				if t.Members == nil {
 					args.Teams[i].Members = team.Members
 				}
 			}
@@ -81,8 +81,8 @@ func createTeamsSetDefaults(args *TeamsArgs) {
 
 func checkTeamMembersAreMembers(argsTeams TeamsArgs, argsMembers MembersArgs) error {
 	for _, t := range argsTeams.Teams {
-		if t.Members != (TeamMemberArgs{}) {
-			for _, m := range []TeamMemberArgs{t.Members} {
+		if t.Members != nil {
+			for _, m := range t.Members {
 				found := false
 				for _, member := range argsMembers.Members {
 					if m.Username == member.Username {
@@ -127,13 +127,13 @@ func createTeams(ctx *pulumi.Context, provider *github.Provider, argsTeams Teams
 		if err != nil {
 			return err
 		}
-		if t.Members != (TeamMemberArgs{}) {
+		if t.Members != nil {
 			teamMembersName := util.FormatResourceName(ctx, "team "+t.Name+" members")
 			_, err = github.NewTeamMembers(ctx, teamMembersName, &github.TeamMembersArgs{
 				TeamId: team.ID(),
 				Members: func() github.TeamMembersMemberArray {
 					var members github.TeamMembersMemberArray
-					for _, m := range []TeamMemberArgs{t.Members} {
+					for _, m := range t.Members {
 						members = append(members, &github.TeamMembersMemberArgs{
 							Username: pulumi.String(m.Username),
 							Role:     pulumi.String(m.Role),
