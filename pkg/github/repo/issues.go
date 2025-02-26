@@ -339,10 +339,8 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	issueName := util.FormatResourceName(ctx, "Project init issue")
 	_, err = github.NewIssue(ctx, issueName, &github.IssueArgs{
 		Repository: repo.Name,
-		Title:      pulumi.String("Welcome to " + ctx.Project() + "!"),
-		Body: pulumi.String(`# Welcome to ` + ctx.Project() + `! :confetti_ball:
-
-## A few things to get you started
+		Title:      pulumi.String("Welcome! :confetti_ball:"),
+		Body: pulumi.String(`## A few things to get you started
 
 - [ ] Edit [CODEOWNERS](../blob/main/.github/CODEOWNERS) to match project codeowners
 - [ ] Edit [CHANGELOG.md](../blob/main/CHANGELOG.md) to match project's changelog (basically just remove the whole content)
