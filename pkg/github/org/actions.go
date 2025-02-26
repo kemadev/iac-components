@@ -20,7 +20,7 @@ var (
 		"anchore/scan-action@*",
 		"aws-actions/configure-aws-credentials@*",
 		"DavidAnson/markdownlint-cli2-action@*",
-		"docker://rhysd/actionlint@*",
+		"docker://rhysd/actionlint:*",
 		"golangci/golangci-lint-action@*",
 		"googleapis/release-please-action@*",
 		"goreleaser/goreleaser-action@*",
