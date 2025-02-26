@@ -16,7 +16,7 @@ var (
 	}
 )
 
-func ProviderSetDefaults(args *ProviderArgs) {
+func SetDefaults(args *ProviderArgs) {
 	if args.Owner == "" {
 		args.Owner = ProviderDefaultArgs.Owner
 	}
