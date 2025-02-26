@@ -336,6 +336,7 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	}, pulumi.Provider(provider))
 	ctx.Log.Info("Created milestone", nil)
 	if err != nil {
+		ctx.Log.Error("Error:"+err.Error(), nil)
 		return err
 	}
 	ctx.Log.Info("Creating issue", nil)
