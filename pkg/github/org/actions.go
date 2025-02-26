@@ -1,4 +1,4 @@
-package repo
+package org
 
 import (
 	"slices"
@@ -51,13 +51,11 @@ func createActionsSetDefaults(args *ActionsArgs) {
 	}
 }
 
-func createActions(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args ActionsArgs) error {
-	actionsRepositoryPermissionsName := util.FormatResourceName(ctx, "Actions repository permissions")
-	_, err := github.NewActionsRepositoryPermissions(ctx, actionsRepositoryPermissionsName, &github.ActionsRepositoryPermissionsArgs{
-		Repository:     repo.Name,
-		Enabled:        pulumi.Bool(true),
+func createActions(ctx *pulumi.Context, provider *github.Provider, args ActionsArgs) error {
+	actionsOrganizationPermissionsName := util.FormatResourceName(ctx, "Actions organization permissions")
+	_, err := github.NewActionsOrganizationPermissions(ctx, actionsOrganizationPermissionsName, &github.ActionsOrganizationPermissionsArgs{
 		AllowedActions: pulumi.String("selected"),
-		AllowedActionsConfig: &github.ActionsRepositoryPermissionsAllowedActionsConfigArgs{
+		AllowedActionsConfig: &github.ActionsOrganizationPermissionsAllowedActionsConfigArgs{
 			GithubOwnedAllowed: pulumi.Bool(true),
 			VerifiedAllowed:    pulumi.Bool(false),
 			PatternsAlloweds: func() pulumi.StringArray {

@@ -7,7 +7,6 @@ import (
 
 type WrapperArgs struct {
 	Provider   p.ProviderArgs
-	Actions    ActionsArgs
 	Branches   BranchesArgs
 	Envs       EnvsArgs
 	Rulesets   RulesetsArgs
@@ -16,7 +15,6 @@ type WrapperArgs struct {
 
 func setDefaultArgs(args *WrapperArgs) {
 	p.SetDefaults(&args.Provider)
-	createActionsSetDefaults(&args.Actions)
 	createBranchesSetDefaults(&args.Branches)
 	createEnvironmentsSetDefaults(&args.Envs)
 	createRulesetsSetDefaults(&args.Rulesets)
@@ -42,10 +40,6 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 		return err
 	}
 	err = createRulesets(ctx, provider, repo, args.Rulesets, args.Branches)
-	if err != nil {
-		return err
-	}
-	err = createActions(ctx, provider, repo, args.Actions)
 	if err != nil {
 		return err
 	}

@@ -9,11 +9,13 @@ type WrapperArgs struct {
 	Provider p.ProviderArgs
 	Settings SettingsArgs
 	Teams    TeamsArgs
+	Actions  ActionsArgs
 }
 
 func setDefaultArgs(args *WrapperArgs) {
 	p.SetDefaults(&args.Provider)
 	createTeamsSetDefaults(&args.Teams)
+	createActionsSetDefaults(&args.Actions)
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
@@ -27,6 +29,10 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 		return err
 	}
 	err = createTeams(ctx, provider, args.Teams)
+	if err != nil {
+		return err
+	}
+	err = createActions(ctx, provider, args.Actions)
 	if err != nil {
 		return err
 	}
