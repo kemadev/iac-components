@@ -346,7 +346,7 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 - [ ] Edit [release-please's manifest](../blob/main/config/release-please/release-please-manifest.json) to ` + "`{}`" + `
 - [ ] Edit [README.md](../blob/main/README.md) with project specific information
 - [ ] Set up your project's wiki (just clone it locally, edit, and push back!)
-- [ ] Enable [merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) if you expect _quite_ a lot of PRs`),
+- [ ] Enable [merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) if you expect _quite a lot_ of PRs`),
 		MilestoneNumber: milestone.Number,
 		Labels: pulumi.StringArray{
 			pulumi.String(IssuesDefaultArgs["status/up-for-grabs"].Name),
