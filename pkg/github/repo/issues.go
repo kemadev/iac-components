@@ -344,7 +344,8 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 - [ ] Edit [CODEOWNERS](../blob/main/.github/CODEOWNERS) to match project codeowners
 - [ ] Edit [CHANGELOG.md](../blob/main/CHANGELOG.md) to match project's changelog (basically just remove the whole content)
 - [ ] Edit [release-please's manifest](../blob/main/config/release-please/release-please-manifest.json) to ` + "`{}`" + `
-- [ ] Edit [README.md](../blob/main/README.md) with project specific information`),
+- [ ] Edit [README.md](../blob/main/README.md) with project specific information
+- [ ] Set up your project's wiki`),
 		MilestoneNumber: milestone.Number,
 		Labels: pulumi.StringArray{
 			pulumi.String(IssuesDefaultArgs["status/up-for-grabs"].Name),
