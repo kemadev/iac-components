@@ -68,7 +68,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 
 		AllowSquashMerge:         pulumi.Bool(true),
 		SquashMergeCommitTitle:   pulumi.String("PR_TITLE"),
-		SquashMergeCommitMessage: pulumi.String("PR_BODY"),
+		SquashMergeCommitMessage: pulumi.String("COMMIT_MESSAGES"),
 		AllowMergeCommit:         pulumi.Bool(false),
 		AllowRebaseMerge:         pulumi.Bool(false),
 		AllowUpdateBranch:        pulumi.Bool(true),
