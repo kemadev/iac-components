@@ -13,14 +13,12 @@ type BranchesArgs struct {
 	Default string
 }
 
-var (
-	BranchesDefaultArgs = BranchesArgs{
-		Dev:     "dev",
-		Next:    "next",
-		Prod:    "main",
-		Default: "main",
-	}
-)
+var BranchesDefaultArgs = BranchesArgs{
+	Dev:     "dev",
+	Next:    "next",
+	Prod:    "main",
+	Default: "main",
+}
 
 func createBranchesSetDefaults(args *BranchesArgs) {
 	if args.Dev == "" {

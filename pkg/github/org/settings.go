@@ -17,9 +17,7 @@ type SettingsArgs struct {
 	Location     string
 }
 
-var (
-	SettingsDefaultArgs = SettingsArgs{}
-)
+var SettingsDefaultArgs = SettingsArgs{}
 
 func createSettingsSetDefaults(args *SettingsArgs) error {
 	if args.BillingEmail == "" {

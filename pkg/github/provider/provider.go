@@ -10,11 +10,9 @@ type ProviderArgs struct {
 	Owner string
 }
 
-var (
-	ProviderDefaultArgs = ProviderArgs{
-		Owner: "kemadev",
-	}
-)
+var ProviderDefaultArgs = ProviderArgs{
+	Owner: "kemadev",
+}
 
 func SetDefaults(args *ProviderArgs) {
 	if args.Owner == "" {

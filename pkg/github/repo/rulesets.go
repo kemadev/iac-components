@@ -11,12 +11,10 @@ type RulesetsArgs struct {
 	RequiredReviewersProd int
 }
 
-var (
-	RulesetsDefaultArgs = RulesetsArgs{
-		RequiredReviewersNext: 1,
-		RequiredReviewersProd: 1,
-	}
-)
+var RulesetsDefaultArgs = RulesetsArgs{
+	RequiredReviewersNext: 1,
+	RequiredReviewersProd: 1,
+}
 
 func createRulesetsSetDefaults(args *RulesetsArgs) {
 	if args.RequiredReviewersNext == 0 {

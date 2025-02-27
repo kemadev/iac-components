@@ -26,12 +26,10 @@ type RepositoryArgs struct {
 	DirectMembers []DirectMember
 }
 
-var (
-	RepositoryDefaultArgs = RepositoryArgs{
-		Visibility: "private",
-		IsTemplate: false,
-	}
-)
+var RepositoryDefaultArgs = RepositoryArgs{
+	Visibility: "private",
+	IsTemplate: false,
+}
 
 func createRepositorySetDefaults(args *RepositoryArgs) {
 	if args.Visibility == "" {

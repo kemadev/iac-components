@@ -31,24 +31,22 @@ const (
 	DevelopersTeamName  = "developers"
 )
 
-var (
-	TeamsDefaultArgs = TeamsArgs{
-		Teams: []TeamArgs{
-			{
-				Name:        AdminTeamName,
-				Description: "Full access everywhere",
-			},
-			{
-				Name:        MaintainersTeamName,
-				Description: "Maintain permissions on all repositories",
-			},
-			{
-				Name:        DevelopersTeamName,
-				Description: "Parent team for all developers",
-			},
+var TeamsDefaultArgs = TeamsArgs{
+	Teams: []TeamArgs{
+		{
+			Name:        AdminTeamName,
+			Description: "Full access everywhere",
 		},
-	}
-)
+		{
+			Name:        MaintainersTeamName,
+			Description: "Maintain permissions on all repositories",
+		},
+		{
+			Name:        DevelopersTeamName,
+			Description: "Parent team for all developers",
+		},
+	},
+}
 
 func createTeamsSetDefaults(args *TeamsArgs) {
 	if args.Teams == nil {

@@ -18,13 +18,11 @@ type TEnvironmentsCreated struct {
 	prod *github.RepositoryEnvironment
 }
 
-var (
-	EnvsDefaultArgs = EnvsArgs{
-		Dev:  "dev",
-		Next: "next",
-		Prod: "prod",
-	}
-)
+var EnvsDefaultArgs = EnvsArgs{
+	Dev:  "dev",
+	Next: "next",
+	Prod: "prod",
+}
 
 func createEnvironmentsSetDefaults(args *EnvsArgs) {
 	if args.Dev == "" {

@@ -10,27 +10,25 @@ type ActionsArgs struct {
 	Actions []string
 }
 
-var (
-	ActionsDefaultActions = []string{
-		// Internal workflows and actions
-		"kemadev/workflows-and-actions/.github/workflows/*",
-		"kemadev/workflows-and-actions/.github/actions/*",
-		// Actions from reusable workflows and actions
-		"anchore/sbom-action@*",
-		"anchore/scan-action@*",
-		"aws-actions/configure-aws-credentials@*",
-		"DavidAnson/markdownlint-cli2-action@*",
-		"docker://rhysd/actionlint:*",
-		"golangci/golangci-lint-action@*",
-		"googleapis/release-please-action@*",
-		"goreleaser/goreleaser-action@*",
-		"hadolint/hadolint-action@*",
-		"ibiqlik/action-yamllint@*",
-		"pulumi/actions@*",
-		"semgrep/semgrep@*",
-		"trufflesecurity/trufflehog@*",
-	}
-)
+var ActionsDefaultActions = []string{
+	// Internal workflows and actions
+	"kemadev/workflows-and-actions/.github/workflows/*",
+	"kemadev/workflows-and-actions/.github/actions/*",
+	// Actions from reusable workflows and actions
+	"anchore/sbom-action@*",
+	"anchore/scan-action@*",
+	"aws-actions/configure-aws-credentials@*",
+	"DavidAnson/markdownlint-cli2-action@*",
+	"docker://rhysd/actionlint:*",
+	"golangci/golangci-lint-action@*",
+	"googleapis/release-please-action@*",
+	"goreleaser/goreleaser-action@*",
+	"hadolint/hadolint-action@*",
+	"ibiqlik/action-yamllint@*",
+	"pulumi/actions@*",
+	"semgrep/semgrep@*",
+	"trufflesecurity/trufflehog@*",
+}
 
 func createActionsSetDefaults(args *ActionsArgs) {
 	if args.Actions == nil {
