@@ -75,7 +75,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		HasDiscussions:           pulumi.Bool(true),
 		HasIssues:                pulumi.Bool(true),
 		HasProjects:              pulumi.Bool(true),
-		HasWiki:                  pulumi.Bool(false),
+		HasWiki:                  pulumi.Bool(true),
 		HasDownloads:             pulumi.Bool(false),
 		Archived:                 pulumi.Bool(false),
 		WebCommitSignoffRequired: pulumi.Bool(false),
