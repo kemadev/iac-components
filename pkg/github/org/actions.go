@@ -28,6 +28,7 @@ var ActionsDefaultActions = []string{
 	"pulumi/actions@*",
 	"semgrep/semgrep@*",
 	"trufflesecurity/trufflehog@*",
+	"peter-evans/create-pull-request@*",
 }
 
 func createActionsSetDefaults(args *ActionsArgs) {
