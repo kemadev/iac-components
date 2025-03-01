@@ -44,14 +44,7 @@ func createRepositorySetDefaults(args *RepositoryArgs) {
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
-		// Keep name from import
-		// Name:        pulumi.String("repository-template"),
-
-		// Prevent accidental deletion
-		ArchiveOnDestroy: pulumi.Bool(true),
-		// Allow non-admins read access from pulumi
-		IgnoreVulnerabilityAlertsDuringRead: pulumi.Bool(true),
-
+		Name:        pulumi.String("repository-template"),
 		Description: pulumi.String(argsRepo.Description),
 		HomepageUrl: pulumi.String(argsRepo.HomepageUrl),
 		Topics: func() pulumi.StringArrayInput {
@@ -63,6 +56,11 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		}(),
 		Visibility: pulumi.String(argsRepo.Visibility),
 		IsTemplate: pulumi.Bool(argsRepo.IsTemplate == true),
+
+		// Prevent accidental deletion
+		ArchiveOnDestroy: pulumi.Bool(true),
+		// Allow non-admins read access from pulumi
+		IgnoreVulnerabilityAlertsDuringRead: pulumi.Bool(true),
 
 		AllowSquashMerge:         pulumi.Bool(true),
 		SquashMergeCommitTitle:   pulumi.String("PR_TITLE"),

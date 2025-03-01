@@ -11,6 +11,8 @@ type WrapperArgs struct {
 	Envs       EnvsArgs
 	Rulesets   RulesetsArgs
 	Repository RepositoryArgs
+	Codeowners CodeownersArgs
+	Files      FilesArgs
 }
 
 func setDefaultArgs(args *WrapperArgs) {
@@ -19,6 +21,8 @@ func setDefaultArgs(args *WrapperArgs) {
 	createEnvironmentsSetDefaults(&args.Envs)
 	createRulesetsSetDefaults(&args.Rulesets)
 	createRepositorySetDefaults(&args.Repository)
+	createCodeownersSetDefaults(&args.Codeowners)
+	createFilesSetDefaults(&args.Files)
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
@@ -44,6 +48,14 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 		return err
 	}
 	err = createDependabot(ctx, provider, repo)
+	if err != nil {
+		return err
+	}
+	err = createCodeowners(ctx, provider, repo, args.Codeowners)
+	if err != nil {
+		return err
+	}
+	err = createFiles(ctx, provider, repo, args.Files)
 	if err != nil {
 		return err
 	}
