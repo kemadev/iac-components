@@ -62,7 +62,15 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
+	err = templateRepo.init(args.Files.UpstreamRepo)
+	if err != nil {
+		return err
+	}
 	err = createFiles(ctx, provider, repo, args.Files)
+	if err != nil {
+		return err
+	}
+	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository)
 	if err != nil {
 		return err
 	}
