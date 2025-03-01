@@ -50,7 +50,7 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createRulesets(ctx, provider, repo, args.Rulesets, args.Branches)
+	err = createRulesets(ctx, provider, repo, args.Rulesets, args.Branches, args.Envs)
 	if err != nil {
 		return err
 	}

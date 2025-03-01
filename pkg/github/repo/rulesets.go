@@ -9,11 +9,16 @@ import (
 type RulesetsArgs struct {
 	RequiredReviewersNext int
 	RequiredReviewersProd int
+	RequiredStatusChecks  []string
 }
 
 var RulesetsDefaultArgs = RulesetsArgs{
 	RequiredReviewersNext: 1,
 	RequiredReviewersProd: 1,
+	RequiredStatusChecks: []string{
+		"Global - CI / Scan code",
+		"Global - CI / Scan secrets",
+	},
 }
 
 func createRulesetsSetDefaults(args *RulesetsArgs) {
@@ -23,9 +28,12 @@ func createRulesetsSetDefaults(args *RulesetsArgs) {
 	if args.RequiredReviewersProd == 0 {
 		args.RequiredReviewersProd = RulesetsDefaultArgs.RequiredReviewersProd
 	}
+	if len(args.RequiredStatusChecks) == 0 {
+		args.RequiredStatusChecks = RulesetsDefaultArgs.RequiredStatusChecks
+	}
 }
 
-func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsRulesets RulesetsArgs, argsBranches BranchesArgs) error {
+func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsRulesets RulesetsArgs, argsBranches BranchesArgs, argsEnvs EnvsArgs) error {
 	rulesetBranchGlobalName := util.FormatResourceName(ctx, "Repository branch ruleset global")
 	_, err := github.NewRepositoryRuleset(ctx, rulesetBranchGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
@@ -176,6 +184,31 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 				RequireLastPushApproval:        pulumi.Bool(true),
 				RequiredReviewThreadResolution: pulumi.Bool(true),
 			},
+			MergeQueue: github.RepositoryRulesetRulesMergeQueueArgs{
+				MergeMethod:                  pulumi.String("SQUASH"),
+				GroupingStrategy:             pulumi.String("ALLGREEN"),
+				MaxEntriesToBuild:            pulumi.Int(10),
+				MinEntriesToMerge:            pulumi.Int(1),
+				MinEntriesToMergeWaitMinutes: pulumi.Int(5),
+				MaxEntriesToMerge:            pulumi.Int(5),
+				CheckResponseTimeoutMinutes:  pulumi.Int(5),
+			},
+			RequiredDeployments: github.RepositoryRulesetRulesRequiredDeploymentsArgs{
+				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Dev}),
+			},
+			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+				DoNotEnforceOnCreate:             pulumi.Bool(false),
+				RequiredChecks: func() github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray {
+					var checks github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray
+					for _, check := range argsRulesets.RequiredStatusChecks {
+						checks = append(checks, github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+							Context: pulumi.String(check),
+						})
+					}
+					return checks
+				}(),
+			},
 		},
 	}, pulumi.Provider(provider))
 	if err != nil {
@@ -220,6 +253,31 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 				RequireCodeOwnerReview:         pulumi.Bool(true),
 				RequireLastPushApproval:        pulumi.Bool(true),
 				RequiredReviewThreadResolution: pulumi.Bool(true),
+			},
+			MergeQueue: github.RepositoryRulesetRulesMergeQueueArgs{
+				MergeMethod:                  pulumi.String("SQUASH"),
+				GroupingStrategy:             pulumi.String("ALLGREEN"),
+				MaxEntriesToBuild:            pulumi.Int(10),
+				MinEntriesToMerge:            pulumi.Int(1),
+				MinEntriesToMergeWaitMinutes: pulumi.Int(5),
+				MaxEntriesToMerge:            pulumi.Int(5),
+				CheckResponseTimeoutMinutes:  pulumi.Int(5),
+			},
+			RequiredDeployments: github.RepositoryRulesetRulesRequiredDeploymentsArgs{
+				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Next}),
+			},
+			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
+				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
+				DoNotEnforceOnCreate:             pulumi.Bool(false),
+				RequiredChecks: func() github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray {
+					var checks github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArray
+					for _, check := range argsRulesets.RequiredStatusChecks {
+						checks = append(checks, github.RepositoryRulesetRulesRequiredStatusChecksRequiredCheckArgs{
+							Context: pulumi.String(check),
+						})
+					}
+					return checks
+				}(),
 			},
 		},
 	}, pulumi.Provider(provider))
