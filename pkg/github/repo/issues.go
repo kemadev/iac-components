@@ -324,38 +324,5 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 			return err
 		}
 	}
-	milestoneName := util.FormatResourceName(ctx, "Project init milestone")
-	milestone, err := github.NewRepositoryMilestone(ctx, milestoneName, &github.RepositoryMilestoneArgs{
-		Repository: repo.Name,
-		// Provider is configured to be the owner of the repository
-		Owner:       provider.Owner.Elem(),
-		Title:       pulumi.String("Project initialization"),
-		Description: pulumi.String("Initial setup and configuration of the repository"),
-	}, pulumi.Provider(provider))
-	if err != nil {
-		return err
-	}
-	issueName := util.FormatResourceName(ctx, "Project init issue")
-	_, err = github.NewIssue(ctx, issueName, &github.IssueArgs{
-		Repository: repo.Name,
-		Title:      pulumi.String("Welcome! :confetti_ball:"),
-		Body: pulumi.String(`## A few things to get you started
-
-- [ ] Edit [CHANGELOG.md](../blob/main/CHANGELOG.md) to match project's changelog (basically just remove the whole content)
-- [ ] Edit [release-please's manifest](../blob/main/config/release-please/release-please-manifest.json) to ` + "`{}`" + `
-- [ ] Edit [README.md](../blob/main/README.md) with project specific information
-- [ ] Set up your project's wiki (just clone it locally, edit, and push back!)
-- [ ] Enable [merge queue](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) if you expect _quite a lot_ of PRs`),
-		MilestoneNumber: milestone.Number,
-		Labels: pulumi.StringArray{
-			pulumi.String(IssuesDefaultArgs["status/up-for-grabs"].Name),
-			pulumi.String(IssuesDefaultArgs["priority/P2"].Name),
-			pulumi.String(IssuesDefaultArgs["size/XS"].Name),
-			pulumi.String(IssuesDefaultArgs["complexity/low"].Name),
-		},
-	}, pulumi.Provider(provider))
-	if err != nil {
-		return err
-	}
 	return nil
 }

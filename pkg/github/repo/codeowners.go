@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/kemadev/iac-components/pkg/util"
+	gdef "github.com/kemadev/iac-components/pkg/github/define"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -22,7 +23,7 @@ var CodeownersDefaultArgs = CodeownersArgs{
 	Codeowners: []CodeownerParam{
 		{
 			Path:   "*",
-			Entity: "@kemadev/maintainers", // TODO make this a reference to org IaC
+			Entity: "@kemadev/maintainers",
 		},
 	},
 }
@@ -55,8 +56,8 @@ func createCodeowners(ctx *pulumi.Context, provider *github.Provider, repo *gith
 		File:              pulumi.String(".github/CODEOWNERS"),
 		Content:           pulumi.String(createCodeownersContent(&args)),
 		CommitMessage:     pulumi.String("feat(codeowners): update CODEOWNERS file"),
-		CommitAuthor:      pulumi.String("pulumi[bot]"), // TODO make this a reference to global settings
-		CommitEmail:       pulumi.String("kemadev+pulumi[bot]@users.noreply.github.com"), // TODO make this a reference to global settings
+		CommitAuthor:      pulumi.String(gdef.GitCommiterName),
+		CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
 		OverwriteOnCreate: pulumi.Bool(true),
 	}, pulumi.Provider(provider))
 	if err != nil {

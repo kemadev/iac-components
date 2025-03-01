@@ -6,6 +6,7 @@ import (
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/storage/memory"
+	gdef "github.com/kemadev/iac-components/pkg/github/define"
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -18,9 +19,26 @@ type FilesArgs struct {
 
 var FilesDefaultArgs = FilesArgs{
 	IgnoredGlobs: []string{
+		".github/CODEOWNERS", // Already
 		"CHANGELOG.md",
-		".github/CODEOWNERS",
 		"README.md",
+		"go.mod",
+		"go.sum",
+
+		// Dockerfile
+		// cmd
+		// env/
+		// release please
+		// docker compose
+		// templater le go.mod
+
+		// pas enable les workflows au bootstrap ca fout le zbeul ca se trigger a chaque commit i.e. chaque file sync
+		// pas run sur main mais next, dependsOn sur la branche et argsbranch a passer
+
+		// move deploy rien a foutre dans repo template
+		// project wiki
+		// merge queue
+
 	},
 	UpstreamRepo: "https://github.com/kemadev/repository-template",
 }
@@ -85,12 +103,12 @@ func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Re
 		}
 		fileName := util.FormatResourceName(ctx, "Repository file "+file.Name)
 		_, err := github.NewRepositoryFile(ctx, fileName, &github.RepositoryFileArgs{
-			Repository:        repo.Name,
-			File:              pulumi.String(file.Name),
+			Repository: repo.Name,
+			File:       pulumi.String(file.Name),
 			Content:           pulumi.String(file.Content),
-			CommitMessage:     pulumi.String("feat(repo-sync): update repository files"),
-			CommitAuthor:      pulumi.String("pulumi[bot]"),                                  // TODO make this a reference to global settings
-			CommitEmail:       pulumi.String("kemadev+pulumi[bot]@users.noreply.github.com"), // TODO make this a reference to global settings
+			CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
+			CommitAuthor:      pulumi.String(gdef.GitCommiterName),
+			CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
 			OverwriteOnCreate: pulumi.Bool(true),
 		}, pulumi.Provider(provider))
 		if err != nil {
