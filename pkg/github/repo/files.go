@@ -30,6 +30,8 @@ var FilesDefaultArgs = FilesArgs{
 		"build/Dockerfile",
 		"tool/docker/docker-compose.yaml",
 		"config/env/aws/dev.env",
+		"config/release-please/release-please-config.json",
+		"config/release-please/release-please-manifest.json",
 	},
 	UpstreamRepo: "https://github.com/kemadev/repository-template",
 }
