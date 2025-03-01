@@ -11,18 +11,25 @@ import (
 )
 
 type FilesArgs struct {
-	UpstreamRepo string
-	IgnoredGlobs []string
+	UpstreamRepo        string
+	ExcludedFiles       []string
+	ChangesIgnoredFiles []string
 }
 
 var FilesDefaultArgs = FilesArgs{
-	IgnoredGlobs: []string{
+	ExcludedFiles: []string{
 		// Files handled by other functions in this module
 		".github/CODEOWNERS",
 		"go.mod",
 		// Repository specific files
 		"CHANGELOG.md",
+	},
+	ChangesIgnoredFiles: []string{
 		"README.md",
+		"cmd/main/main.go",
+		"build/Dockerfile",
+		"tool/docker/docker-compose.yaml",
+		"config/env/aws/dev.env",
 	},
 	UpstreamRepo: "https://github.com/kemadev/repository-template",
 }
@@ -33,7 +40,8 @@ type GitFile struct {
 }
 
 func createFilesSetDefaults(args *FilesArgs) {
-	args.IgnoredGlobs = append(args.IgnoredGlobs, FilesDefaultArgs.IgnoredGlobs...)
+	args.ExcludedFiles = append(args.ExcludedFiles, FilesDefaultArgs.ExcludedFiles...)
+	args.ChangesIgnoredFiles = append(args.ChangesIgnoredFiles, FilesDefaultArgs.ChangesIgnoredFiles...)
 	if args.UpstreamRepo == "" {
 		args.UpstreamRepo = FilesDefaultArgs.UpstreamRepo
 	}
@@ -61,8 +69,12 @@ func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Re
 		return err
 	}
 	for _, file := range filesList {
-		if found := slices.Contains(args.IgnoredGlobs, file.Name); found {
+		if found := slices.Contains(args.ExcludedFiles, file.Name); found {
 			continue
+		}
+		var ignoreChangesOption pulumi.ResourceOption
+		if found := slices.Contains(args.ChangesIgnoredFiles, file.Name); found {
+			ignoreChangesOption = pulumi.IgnoreChanges([]string{"content"})
 		}
 		fileName := util.FormatResourceName(ctx, "Repository file "+file.Name)
 		_, err := github.NewRepositoryFile(ctx, fileName, &github.RepositoryFileArgs{
@@ -73,7 +85,7 @@ func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Re
 			CommitAuthor:      pulumi.String(gdef.GitCommiterName),
 			CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
 			OverwriteOnCreate: pulumi.Bool(true),
-		}, pulumi.Provider(provider))
+		}, pulumi.Provider(provider), ignoreChangesOption)
 		if err != nil {
 			return err
 		}
