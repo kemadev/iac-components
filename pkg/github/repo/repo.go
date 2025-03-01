@@ -24,6 +24,7 @@ type RepositoryArgs struct {
 	HomepageUrl   string
 	Topics        []string
 	Visibility    string
+	Archived      bool
 	IsTemplate    bool
 	Teams         []Team
 	DirectMembers []DirectMember
@@ -61,7 +62,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 			return topics
 		}(),
 		Visibility: pulumi.String(argsRepo.Visibility),
-		IsTemplate: pulumi.Bool(argsRepo.IsTemplate == true),
+		IsTemplate: pulumi.Bool(argsRepo.IsTemplate),
 
 		// Prevent accidental deletion
 		ArchiveOnDestroy: pulumi.Bool(true),
@@ -81,7 +82,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		HasProjects:              pulumi.Bool(true),
 		HasWiki:                  pulumi.Bool(true),
 		HasDownloads:             pulumi.Bool(false),
-		Archived:                 pulumi.Bool(false),
+		Archived:                 pulumi.Bool(argsRepo.Archived),
 		WebCommitSignoffRequired: pulumi.Bool(false),
 
 		VulnerabilityAlerts: func() pulumi.Bool {

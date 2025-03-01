@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/kemadev/iac-components/pkg/util"
 	gdef "github.com/kemadev/iac-components/pkg/github/define"
+	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -55,7 +55,7 @@ func createCodeowners(ctx *pulumi.Context, provider *github.Provider, repo *gith
 		Repository:        repo.Name,
 		File:              pulumi.String(".github/CODEOWNERS"),
 		Content:           pulumi.String(createCodeownersContent(&args)),
-		CommitMessage:     pulumi.String("feat(codeowners): update CODEOWNERS file"),
+		CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
 		CommitAuthor:      pulumi.String(gdef.GitCommiterName),
 		CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
 		OverwriteOnCreate: pulumi.Bool(true),
