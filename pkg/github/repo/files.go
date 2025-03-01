@@ -65,7 +65,7 @@ func getRepoTemplateFilesList() ([]GitFile, error) {
 	return files, nil
 }
 
-func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args FilesArgs) error {
+func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args FilesArgs, branch *github.Branch) error {
 	filesList, err := getRepoTemplateFilesList()
 	if err != nil {
 		return err
@@ -81,6 +81,7 @@ func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Re
 		fileName := util.FormatResourceName(ctx, "Repository file "+file.Name)
 		_, err := github.NewRepositoryFile(ctx, fileName, &github.RepositoryFileArgs{
 			Repository:        repo.Name,
+			Branch:            branch.Branch,
 			File:              pulumi.String(file.Name),
 			Content:           pulumi.String(file.Content),
 			CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),

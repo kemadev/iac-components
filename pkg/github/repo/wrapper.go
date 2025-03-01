@@ -42,7 +42,7 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createBranches(ctx, provider, repo, args.Branches)
+	branches, err := createBranches(ctx, provider, repo, args.Branches)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createCodeowners(ctx, provider, repo, args.Codeowners)
+	err = createCodeowners(ctx, provider, repo, args.Codeowners, branches.Next)
 	if err != nil {
 		return err
 	}
@@ -66,11 +66,11 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createFiles(ctx, provider, repo, args.Files)
+	err = createFiles(ctx, provider, repo, args.Files, branches.Next)
 	if err != nil {
 		return err
 	}
-	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository)
+	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository, branches.Next)
 	if err != nil {
 		return err
 	}

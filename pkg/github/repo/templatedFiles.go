@@ -22,7 +22,7 @@ func getRepoTemplateFileContent(file string) (string, error) {
 	return c, nil
 }
 
-func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsFiles FilesArgs, argsRepo RepositoryArgs) error {
+func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsFiles FilesArgs, argsRepo RepositoryArgs, branch *github.Branch) error {
 	goModFileOriginalContent, err := getRepoTemplateFileContent("go.mod")
 	if err != nil {
 		return err
@@ -35,6 +35,7 @@ func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *
 	goModFileName := util.FormatResourceName(ctx, "Repository file go.mod")
 	_, err = github.NewRepositoryFile(ctx, goModFileName, &github.RepositoryFileArgs{
 		Repository:        repo.Name,
+		Branch:            branch.Branch,
 		File:              pulumi.String("go.mod"),
 		Content:           pulumi.String(goModFileTemplatedContent),
 		CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
