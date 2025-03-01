@@ -1,6 +1,8 @@
 package repo
 
 import (
+	"fmt"
+
 	"github.com/kemadev/iac-components/pkg/util"
 	"github.com/pulumi/pulumi-github/sdk/v6/go/github"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -32,14 +34,17 @@ var RepositoryDefaultArgs = RepositoryArgs{
 	IsTemplate: false,
 }
 
-func createRepositorySetDefaults(args *RepositoryArgs) {
+func createRepositorySetDefaults(args *RepositoryArgs) error {
+	if args.Name == "" {
+		return fmt.Errorf("Repository Name is required")
+	}
+	if args.Description == "" {
+		return fmt.Errorf("Repository Description is required")
+	}
 	if args.Visibility == "" {
 		args.Visibility = RepositoryDefaultArgs.Visibility
 	}
-	// actually useless, but for consistency
-	if args.IsTemplate == false {
-		args.IsTemplate = RepositoryDefaultArgs.IsTemplate
-	}
+	return nil
 }
 
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {

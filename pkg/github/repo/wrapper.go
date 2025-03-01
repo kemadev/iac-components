@@ -15,18 +15,25 @@ type WrapperArgs struct {
 	Files      FilesArgs
 }
 
-func setDefaultArgs(args *WrapperArgs) {
+func setDefaultArgs(args *WrapperArgs) error {
 	p.SetDefaults(&args.Provider)
 	createBranchesSetDefaults(&args.Branches)
 	createEnvironmentsSetDefaults(&args.Envs)
 	createRulesetsSetDefaults(&args.Rulesets)
-	createRepositorySetDefaults(&args.Repository)
+	err := createRepositorySetDefaults(&args.Repository)
+	if err != nil {
+		return err
+	}
 	createCodeownersSetDefaults(&args.Codeowners)
 	createFilesSetDefaults(&args.Files)
+	return nil
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
-	setDefaultArgs(&args)
+	err := setDefaultArgs(&args)
+	if err != nil {
+		return err
+	}
 	provider, err := p.NewProvider(ctx, args.Provider)
 	if err != nil {
 		return err

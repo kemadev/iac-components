@@ -22,15 +22,13 @@ var FilesDefaultArgs = FilesArgs{
 		".github/CODEOWNERS", // Already
 		"CHANGELOG.md",
 		"README.md",
-		"go.mod",
-		"go.sum",
 
 		// Dockerfile
 		// cmd
 		// env/
 		// release please
 		// docker compose
-		// templater le go.mod
+		// templater le go.mod / go.sum
 
 		// pas enable les workflows au bootstrap ca fout le zbeul ca se trigger a chaque commit i.e. chaque file sync
 		// pas run sur main mais next, dependsOn sur la branche et argsbranch a passer
