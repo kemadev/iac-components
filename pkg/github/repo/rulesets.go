@@ -18,6 +18,7 @@ var RulesetsDefaultArgs = RulesetsArgs{
 	RequiredStatusChecks: []string{
 		"Global - CI / Scan code",
 		"Global - CI / Scan secrets",
+		"Check PR title / Check PR title",
 	},
 }
 
