@@ -342,11 +342,12 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	_, err = github.NewIssue(ctx, repoInitIssueName, &github.IssueArgs{
 		Repository:      repo.Name,
 		MilestoneNumber: milestone.Number,
-		Title:           pulumi.String("Repository initialization tasks"),
+		Title:           pulumi.String("Repository initialization tasks :pencil:"),
 		Body: pulumi.String(`## Welcome to the repository! :wave:
-		- [ ] Create the project's wiki. Actually, just clone it and update the content!
-		- [ ] Modify the project's README. A basic template is provided, feel the blanks!
-		- [ ] Add a social image preview for the repository. It's what people see when previewing links, make it catchy!
+
+- [ ] Create the project's wiki. Actually, just clone it and update the content! :spiral_notepad:
+- [ ] Modify the project's README. A basic template is provided, feel the blanks! :handshake:
+- [ ] Add a social image preview for the repository. It's what people see when previewing links, make it catchy! :link:
 `),
 		Labels: pulumi.StringArray{
 			pulumi.String(IssuesDefaultArgs["status/up-for-grabs"].Name),
