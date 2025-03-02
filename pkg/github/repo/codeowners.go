@@ -28,9 +28,8 @@ var CodeownersDefaultArgs = CodeownersArgs{
 	},
 }
 
-var CodeownersDefaultContent = `# Read more about CODEOWNERS [here](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
-
-# This files is managed by repository-as-code! Do not edit manually!
+var CodeownersDefaultContent = `# File managed by repo-as-code, do not edit manually!
+# Read more about CODEOWNERS [here](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners)
 
 `
 
