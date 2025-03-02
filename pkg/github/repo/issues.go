@@ -324,5 +324,34 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 			return err
 		}
 	}
+
+	repoInitMilestoneName := util.FormatResourceName(ctx, "Repository milestone initial")
+	milestone, err := github.NewRepositoryMilestone(ctx, repoInitMilestoneName, &github.RepositoryMilestoneArgs{
+		Repository:  repo.Name,
+		Owner:       repo.FullName,
+		Title:       pulumi.String("Repository initialization :confetti_ball:"),
+		Description: pulumi.String("Everything to get started with the repository!"),
+		State:       pulumi.String("open"),
+	}, pulumi.Provider(provider))
+	if err != nil {
+		return err
+	}
+
+	repoInitIssueName := util.FormatResourceName(ctx, "Repository issue initial")
+	_, err = github.NewIssue(ctx, repoInitIssueName, &github.IssueArgs{
+		Repository:      repo.Name,
+		MilestoneNumber: milestone.Number,
+		Title:           pulumi.String("Repository initialization tasks"),
+		Body: pulumi.String(`## Welcome to the repository! :wave:
+		- [ ] Create the project's wiki. Actually, just clone it and update the content!
+		- [ ] Modify the project's README. A basic template is provided, feel the blanks!
+		- [ ] Add a social image preview for the repository. It's what people see when previewing links, make it catchy!
+`),
+		Labels: pulumi.StringArray{pulumi.String("area/docs"), pulumi.String("status/needs-triage")},
+	}, pulumi.Provider(provider))
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
