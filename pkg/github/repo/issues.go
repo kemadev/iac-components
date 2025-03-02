@@ -328,7 +328,7 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 	repoInitMilestoneName := util.FormatResourceName(ctx, "Repository milestone initial")
 	milestone, err := github.NewRepositoryMilestone(ctx, repoInitMilestoneName, &github.RepositoryMilestoneArgs{
 		Repository:  repo.Name,
-		Owner:       repo.FullName,
+		Owner:       provider.Owner.Elem(),
 		Title:       pulumi.String("Repository initialization :confetti_ball:"),
 		Description: pulumi.String("Everything to get started with the repository!"),
 		State:       pulumi.String("open"),
