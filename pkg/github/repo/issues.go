@@ -327,9 +327,10 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 
 	repoInitMilestoneName := util.FormatResourceName(ctx, "Repository milestone initial")
 	milestone, err := github.NewRepositoryMilestone(ctx, repoInitMilestoneName, &github.RepositoryMilestoneArgs{
-		Repository:  repo.Name,
-		Owner:       provider.Owner.Elem(),
-		Title:       pulumi.String("Repository initialization :confetti_ball:"),
+		Repository: repo.Name,
+		Owner:      provider.Owner.Elem(),
+		// Can't use :emoji: as its not rendered in the milestone title
+		Title:       pulumi.String("Repository initialization 🎊"),
 		Description: pulumi.String("Everything to get started with the repository!"),
 		State:       pulumi.String("open"),
 	}, pulumi.Provider(provider))
@@ -347,7 +348,12 @@ func createIssues(ctx *pulumi.Context, provider *github.Provider, repo *github.R
 		- [ ] Modify the project's README. A basic template is provided, feel the blanks!
 		- [ ] Add a social image preview for the repository. It's what people see when previewing links, make it catchy!
 `),
-		Labels: pulumi.StringArray{pulumi.String("area/docs"), pulumi.String("status/needs-triage")},
+		Labels: pulumi.StringArray{
+			pulumi.String(IssuesDefaultArgs["status/up-for-grabs"].Name),
+			pulumi.String(IssuesDefaultArgs["priority/P2"].Name),
+			pulumi.String(IssuesDefaultArgs["size/XS"].Name),
+			pulumi.String(IssuesDefaultArgs["complexity/low"].Name),
+		},
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return err
