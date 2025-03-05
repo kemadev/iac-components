@@ -95,7 +95,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyDevName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentDev.Environment,
-		BranchPattern: pulumi.String(argsBranches.Dev),
+		BranchPattern: pulumi.String("*"),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return TEnvironmentsCreated{}, err
@@ -105,7 +105,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyNextName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentNext.Environment,
-		BranchPattern: pulumi.String(argsBranches.Next),
+		BranchPattern: pulumi.String("*"),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return TEnvironmentsCreated{}, err

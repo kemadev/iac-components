@@ -30,6 +30,8 @@ var ActionsDefaultActions = []string{
 	"trufflesecurity/trufflehog@*",
 	"github/command@*",
 	"github/branch-deploy@*",
+	"GrantBirki/comment@*",
+	"peter-evans/create-or-update-comment@*",
 }
 
 func createActionsSetDefaults(args *ActionsArgs) {
