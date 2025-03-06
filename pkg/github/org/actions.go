@@ -29,8 +29,6 @@ var ActionsDefaultActions = []string{
 	"semgrep/semgrep@*",
 	"trufflesecurity/trufflehog@*",
 	"github/command@*",
-	"github/branch-deploy@*",
-	"GrantBirki/comment@*",
 	"peter-evans/create-or-update-comment@*",
 }
 
