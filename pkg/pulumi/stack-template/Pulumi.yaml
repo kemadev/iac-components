@@ -1,5 +1,5 @@
-name: ${PROJECT}
-description: ${DESCRIPTION}
+name: github-com-kemadev-iac-components-pkg-pulumi-stack-template
+description: Pulumi stack template for infrastructure as code components
 runtime: go
 config:
   pulumi:disable-default-providers:
