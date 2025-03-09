@@ -36,14 +36,15 @@ var RepositoryDefaultArgs = RepositoryArgs{
 }
 
 func createRepositorySetDefaults(args *RepositoryArgs) error {
-	if args.Name == "" {
-		return fmt.Errorf("Repository Name is required")
-	}
 	if args.Description == "" {
 		return fmt.Errorf("Repository Description is required")
+	} else if args.Description == "CHANGEME" {
+		return fmt.Errorf("Repository Description must be changed from the default value")
 	}
 	if args.Visibility == "" {
 		args.Visibility = RepositoryDefaultArgs.Visibility
+	} else if args.Visibility == "CHANGEME" {
+		return fmt.Errorf("Repository Visibility must be changed from the default value")
 	}
 	return nil
 }
@@ -51,7 +52,8 @@ func createRepositorySetDefaults(args *RepositoryArgs) error {
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
-		Name:        pulumi.String(argsRepo.Name),
+		// Keep name from the initial resource import
+		// Name:        pulumi.String(argsRepo.Name),
 		Description: pulumi.String(argsRepo.Description),
 		HomepageUrl: pulumi.String(argsRepo.HomepageUrl),
 		Topics: func() pulumi.StringArrayInput {
