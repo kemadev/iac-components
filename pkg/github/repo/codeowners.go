@@ -37,7 +37,7 @@ func createCodeownersSetDefaults(args *CodeownersArgs) error {
 	if len(args.Codeowners) == 0 {
 		args.Codeowners = CodeownersDefaultArgs.Codeowners
 	}
-	for i, codeowner := range args.Codeowners {
+	for _, codeowner := range args.Codeowners {
 		if codeowner.Path == "" {
 			return fmt.Errorf("Codeowner Path must be set")
 		} else if codeowner.Path == "CHANGEME" {
@@ -49,6 +49,7 @@ func createCodeownersSetDefaults(args *CodeownersArgs) error {
 			return fmt.Errorf("Codeowner Entity must be changed from the default value")
 		}
 	}
+	return nil
 }
 
 func createCodeownersContent(args *CodeownersArgs) string {
