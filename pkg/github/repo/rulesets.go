@@ -130,7 +130,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			},
 		},
 		Rules: github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
+			Creation:              pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
@@ -174,7 +174,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			},
 		},
 		Rules: github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
+			Creation:              pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
@@ -244,7 +244,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 			},
 		},
 		Rules: github.RepositoryRulesetRulesArgs{
-			Creation:              pulumi.Bool(true),
+			Creation:              pulumi.Bool(false),
 			Deletion:              pulumi.Bool(true),
 			NonFastForward:        pulumi.Bool(true),
 			RequiredLinearHistory: pulumi.Bool(true),
