@@ -1,0 +1,8 @@
+name: ${PROJECT}
+description: ${DESCRIPTION}
+runtime: go
+config:
+  pulumi:disable-default-providers:
+    description: Disable default providers to enforce using configured ones
+    value:
+      - '*'
