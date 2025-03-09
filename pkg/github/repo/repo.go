@@ -108,7 +108,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 			// Advanced Security is required for private repositories
 			return nil
 		}(),
-	}, pulumi.Provider(provider))
+	}, pulumi.Provider(provider), pulumi.IgnoreChanges([]string{"template"}))
 	if err != nil {
 		return nil, err
 	}
