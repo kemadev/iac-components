@@ -24,7 +24,10 @@ func setDefaultArgs(args *WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	createCodeownersSetDefaults(&args.Codeowners)
+	err = createCodeownersSetDefaults(&args.Codeowners)
+	if err != nil {
+		return err
+	}
 	createFilesSetDefaults(&args.Files)
 	return nil
 }
