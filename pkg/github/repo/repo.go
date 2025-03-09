@@ -78,7 +78,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		AllowRebaseMerge:         pulumi.Bool(false),
 		AllowUpdateBranch:        pulumi.Bool(true),
 		AllowAutoMerge:           pulumi.Bool(true),
-		DeleteBranchOnMerge:      pulumi.Bool(false),
+		DeleteBranchOnMerge:      pulumi.Bool(true),
 		HasDiscussions:           pulumi.Bool(true),
 		HasIssues:                pulumi.Bool(true),
 		HasProjects:              pulumi.Bool(true),
