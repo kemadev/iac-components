@@ -1,0 +1,11 @@
+name: github-com-kemadev-repository-template-deploy-10-github-org
+description: ""
+runtime: go
+config:
+  pulumi:disable-default-providers:
+    description: Disable default providers to enforce using configured ones
+    value:
+      - '*'
+  pulumi:tags:
+    value:
+      pulumi:template: /home/kema/dev/git/github.com/kemadev/repository-template/config/pulumi/stack-template
