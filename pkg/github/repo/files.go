@@ -27,6 +27,11 @@ var FilesDefaultArgs = FilesArgs{
 	ChangesIgnoredFiles: []string{
 		"README.md",
 		"cmd/main/main.go",
+		"config/github-repo/go.mod",
+		"config/github-repo/go.sum",
+		"config/github-repo/main.go",
+		"config/github-repo/Pulumi.main.yaml",
+		"config/github-repo/Pulumi.yaml",
 		"build/Dockerfile",
 		"tool/docker/docker-compose.yaml",
 		"config/env/aws/dev.env",
