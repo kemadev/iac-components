@@ -33,9 +33,21 @@ var CodeownersDefaultContent = `# File managed by repo-as-code, do not edit manu
 
 `
 
-func createCodeownersSetDefaults(args *CodeownersArgs) {
+func createCodeownersSetDefaults(args *CodeownersArgs) error {
 	if len(args.Codeowners) == 0 {
 		args.Codeowners = CodeownersDefaultArgs.Codeowners
+	}
+	for i, codeowner := range args.Codeowners {
+		if codeowner.Path == "" {
+			return fmt.Errorf("Codeowner Path must be set")
+		} else if codeowner.Path == "CHANGEME" {
+			return fmt.Errorf("Codeowner Path must be changed from the default value")
+		}
+		if codeowner.Entity == "" {
+			return fmt.Errorf("Codeowner Entity must be set")
+		} else if codeowner.Entity == "CHANGEME" {
+			return fmt.Errorf("Codeowner Entity must be changed from the default value")
+		}
 	}
 }
 
