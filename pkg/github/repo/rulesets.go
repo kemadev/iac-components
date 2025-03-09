@@ -195,7 +195,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 				CheckResponseTimeoutMinutes:  pulumi.Int(5),
 			},
 			RequiredDeployments: github.RepositoryRulesetRulesRequiredDeploymentsArgs{
-				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Dev}),
+				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Next}),
 			},
 			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
@@ -265,7 +265,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 				CheckResponseTimeoutMinutes:  pulumi.Int(5),
 			},
 			RequiredDeployments: github.RepositoryRulesetRulesRequiredDeploymentsArgs{
-				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Next}),
+				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Prod}),
 			},
 			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),
