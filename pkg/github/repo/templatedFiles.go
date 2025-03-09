@@ -42,7 +42,7 @@ func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *
 		CommitAuthor:      pulumi.String(gdef.GitCommiterName),
 		CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
 		OverwriteOnCreate: pulumi.Bool(true),
-	}, pulumi.Provider(provider))
+	}, pulumi.Provider(provider), pulumi.IgnoreChanges([]string{"content"}))
 	if err != nil {
 		return err
 	}

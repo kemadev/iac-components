@@ -1,8 +1,0 @@
-name: github-com-kemadev-iac-components-pkg-pulumi-repo-template
-description: ""
-runtime: go
-config:
-  pulumi:disable-default-providers:
-    description: Disable default providers to enforce using configured ones
-    value:
-      - '*'
