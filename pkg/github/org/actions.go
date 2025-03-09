@@ -28,7 +28,6 @@ var ActionsDefaultActions = []string{
 	"pulumi/actions@*",
 	"semgrep/semgrep@*",
 	"trufflesecurity/trufflehog@*",
-	"github/command@*",
 	"peter-evans/create-or-update-comment@*",
 }
 
