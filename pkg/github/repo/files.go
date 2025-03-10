@@ -27,6 +27,9 @@ var FilesDefaultArgs = FilesArgs{
 	ChangesIgnoredFiles: []string{
 		"README.md",
 		"cmd/main/main.go",
+		"doc/_Sidebar.md",
+		"doc/_Footer.md",
+		"doc/Home.md",
 		"config/github-repo/go.mod",
 		"config/github-repo/go.sum",
 		"config/github-repo/main.go",
