@@ -29,6 +29,7 @@ var ActionsDefaultActions = []string{
 	"semgrep/semgrep@*",
 	"trufflesecurity/trufflehog@*",
 	"peter-evans/create-or-update-comment@*",
+	"actions/github-script@*",
 }
 
 func createActionsSetDefaults(args *ActionsArgs) {
