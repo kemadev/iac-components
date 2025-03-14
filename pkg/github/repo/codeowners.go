@@ -61,12 +61,12 @@ func createCodeownersContent(args *CodeownersArgs) string {
 	return codeownersContent.String()
 }
 
-func createCodeowners(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args CodeownersArgs, branch *github.Branch) error {
+func createCodeowners(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args CodeownersArgs, targetBranch string) error {
 	codeownersGithubFileName := util.FormatResourceName(ctx, "Repository codeowners file")
 	_, err := github.NewRepositoryFile(ctx, codeownersGithubFileName, &github.RepositoryFileArgs{
 		Repository:        repo.Name,
 		File:              pulumi.String(".github/CODEOWNERS"),
-		Branch:            branch.Branch,
+		Branch:            pulumi.String(targetBranch),
 		Content:           pulumi.String(createCodeownersContent(&args)),
 		CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
 		CommitAuthor:      pulumi.String(gdef.GitCommiterName),

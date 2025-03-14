@@ -73,7 +73,7 @@ func getRepoTemplateFilesList() ([]GitFile, error) {
 	return files, nil
 }
 
-func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args FilesArgs, branch *github.Branch) error {
+func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, args FilesArgs, targetBranch string, baseBranch string) error {
 	filesList, err := getRepoTemplateFilesList()
 	if err != nil {
 		return err
@@ -88,14 +88,16 @@ func createFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Re
 		}
 		fileName := util.FormatResourceName(ctx, "Repository file "+file.Name)
 		_, err := github.NewRepositoryFile(ctx, fileName, &github.RepositoryFileArgs{
-			Repository:        repo.Name,
-			Branch:            branch.Branch,
-			File:              pulumi.String(file.Name),
-			Content:           pulumi.String(file.Content),
-			CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
-			CommitAuthor:      pulumi.String(gdef.GitCommiterName),
-			CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
-			OverwriteOnCreate: pulumi.Bool(true),
+			Repository:                   repo.Name,
+			Branch:                       pulumi.String(targetBranch),
+			AutocreateBranch:             pulumi.Bool(true),
+			AutocreateBranchSourceBranch: pulumi.String(baseBranch),
+			File:                         pulumi.String(file.Name),
+			Content:                      pulumi.String(file.Content),
+			CommitMessage:                pulumi.String(gdef.GitDefaultCommitMessage),
+			CommitAuthor:                 pulumi.String(gdef.GitCommiterName),
+			CommitEmail:                  pulumi.String(gdef.GitCommiterEmail),
+			OverwriteOnCreate:            pulumi.Bool(true),
 		}, pulumi.Provider(provider), ignoreChangesOption)
 		if err != nil {
 			return err

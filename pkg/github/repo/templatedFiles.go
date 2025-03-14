@@ -22,7 +22,7 @@ func getRepoTemplateFileContent(file string) (string, error) {
 	return c, nil
 }
 
-func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsFiles FilesArgs, argsRepo RepositoryArgs, branch *github.Branch) error {
+func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsFiles FilesArgs, argsRepo RepositoryArgs, targetBranch string, baseBranch string) error {
 	goModFileOriginalContent, err := getRepoTemplateFileContent("go.mod")
 	if err != nil {
 		return err
@@ -34,14 +34,16 @@ func createTemplatedFiles(ctx *pulumi.Context, provider *github.Provider, repo *
 	goModFileTemplatedContent := re.ReplaceAllString(goModFileOriginalContent, "${1}"+argsRepo.Name+"${2}")
 	goModFileName := util.FormatResourceName(ctx, "Repository file go.mod")
 	_, err = github.NewRepositoryFile(ctx, goModFileName, &github.RepositoryFileArgs{
-		Repository:        repo.Name,
-		Branch:            branch.Branch,
-		File:              pulumi.String("go.mod"),
-		Content:           pulumi.String(goModFileTemplatedContent),
-		CommitMessage:     pulumi.String(gdef.GitDefaultCommitMessage),
-		CommitAuthor:      pulumi.String(gdef.GitCommiterName),
-		CommitEmail:       pulumi.String(gdef.GitCommiterEmail),
-		OverwriteOnCreate: pulumi.Bool(true),
+		Repository:                   repo.Name,
+		Branch:                       pulumi.String(targetBranch),
+		AutocreateBranch:             pulumi.Bool(true),
+		AutocreateBranchSourceBranch: pulumi.String(baseBranch),
+		File:                         pulumi.String("go.mod"),
+		Content:                      pulumi.String(goModFileTemplatedContent),
+		CommitMessage:                pulumi.String(gdef.GitDefaultCommitMessage),
+		CommitAuthor:                 pulumi.String(gdef.GitCommiterName),
+		CommitEmail:                  pulumi.String(gdef.GitCommiterEmail),
+		OverwriteOnCreate:            pulumi.Bool(true),
 	}, pulumi.Provider(provider), pulumi.IgnoreChanges([]string{"content"}))
 	if err != nil {
 		return err

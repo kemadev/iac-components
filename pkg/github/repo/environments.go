@@ -21,7 +21,7 @@ type TEnvironmentsCreated struct {
 var EnvsDefaultArgs = EnvsArgs{
 	Dev:  "dev",
 	Next: "next",
-	Prod: "prod",
+	Prod: "main",
 }
 
 func createEnvironmentsSetDefaults(args *EnvsArgs) {
@@ -36,7 +36,7 @@ func createEnvironmentsSetDefaults(args *EnvsArgs) {
 	}
 }
 
-func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsEnvs EnvsArgs, argsBranches BranchesArgs) (TEnvironmentsCreated, error) {
+func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsEnvs EnvsArgs) (TEnvironmentsCreated, error) {
 	deploymentEnvironmentDevName := util.FormatResourceName(ctx, "Deployment environment dev")
 	deploymentEnvironmentDev, err := github.NewRepositoryEnvironment(ctx, deploymentEnvironmentDevName, &github.RepositoryEnvironmentArgs{
 		Repository:        repo.Name,
@@ -115,7 +115,7 @@ func createEnvironments(ctx *pulumi.Context, provider *github.Provider, repo *gi
 	_, err = github.NewRepositoryEnvironmentDeploymentPolicy(ctx, repositoryEnvironmentDeploymentPolicyProdName, &github.RepositoryEnvironmentDeploymentPolicyArgs{
 		Repository:    repo.Name,
 		Environment:   deploymentEnvironmentProd.Environment,
-		BranchPattern: pulumi.String(argsBranches.Prod),
+		BranchPattern: pulumi.String("*"),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return TEnvironmentsCreated{}, err

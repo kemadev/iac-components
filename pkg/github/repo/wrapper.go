@@ -7,7 +7,6 @@ import (
 
 type WrapperArgs struct {
 	Provider   p.ProviderArgs
-	Branches   BranchesArgs
 	Envs       EnvsArgs
 	Rulesets   RulesetsArgs
 	Repository RepositoryArgs
@@ -17,7 +16,6 @@ type WrapperArgs struct {
 
 func setDefaultArgs(args *WrapperArgs) error {
 	p.SetDefaults(&args.Provider)
-	createBranchesSetDefaults(&args.Branches)
 	createEnvironmentsSetDefaults(&args.Envs)
 	createRulesetsSetDefaults(&args.Rulesets)
 	err := createRepositorySetDefaults(&args.Repository)
@@ -33,6 +31,7 @@ func setDefaultArgs(args *WrapperArgs) error {
 }
 
 func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
+	targetBranch := "repo-as-code-update"
 	err := setDefaultArgs(&args)
 	if err != nil {
 		return err
@@ -41,19 +40,15 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	repo, err := createRepo(ctx, provider, args.Repository, args.Branches)
+	repo, err := createRepo(ctx, provider, args.Repository)
 	if err != nil {
 		return err
 	}
-	branches, err := createBranches(ctx, provider, repo, args.Branches)
+	envs, err := createEnvironments(ctx, provider, repo, args.Envs)
 	if err != nil {
 		return err
 	}
-	_, err = createEnvironments(ctx, provider, repo, args.Envs, args.Branches)
-	if err != nil {
-		return err
-	}
-	err = createRulesets(ctx, provider, repo, args.Rulesets, args.Branches, args.Envs)
+	err = createRulesets(ctx, provider, repo, args.Rulesets, envs.prod.Environment.ElementType().Name())
 	if err != nil {
 		return err
 	}
@@ -61,22 +56,22 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createCodeowners(ctx, provider, repo, args.Codeowners, branches.Next)
+	err = createCodeowners(ctx, provider, repo, args.Codeowners, targetBranch)
 	if err != nil {
 		return err
 	}
-	// err = templateRepo.init(args.Files.UpstreamRepo)
-	// if err != nil {
-	// 	return err
-	// }
-	// err = createFiles(ctx, provider, repo, args.Files, branches.Next)
-	// if err != nil {
-	// 	return err
-	// }
-	// err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository, branches.Next)
-	// if err != nil {
-	// 	return err
-	// }
+	err = templateRepo.init(args.Files.UpstreamRepo)
+	if err != nil {
+		return err
+	}
+	err = createFiles(ctx, provider, repo, args.Files, targetBranch, repo.DefaultBranch.ElementType().Name())
+	if err != nil {
+		return err
+	}
+	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository, targetBranch, repo.DefaultBranch.ElementType().Name())
+	if err != nil {
+		return err
+	}
 	err = createIssues(ctx, provider, repo)
 	if err != nil {
 		return err

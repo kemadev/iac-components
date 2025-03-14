@@ -49,7 +49,7 @@ func createRepositorySetDefaults(args *RepositoryArgs) error {
 	return nil
 }
 
-func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs, argsBranches BranchesArgs) (*github.Repository, error) {
+func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs) (*github.Repository, error) {
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
 		// Keep name from the initial resource import
@@ -112,10 +112,18 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 	if err != nil {
 		return nil, err
 	}
+	defaulBranchName := util.FormatResourceName(ctx, "Repository default branch")
+	_, err = github.NewBranch(ctx, defaulBranchName, &github.BranchArgs{
+		Repository: repo.Name,
+		Branch:     pulumi.String("main"),
+	}, pulumi.Provider(provider))
+	if err != nil {
+		return nil, err
+	}
 	branchDefaultName := util.FormatResourceName(ctx, "Repository default branch")
 	_, err = github.NewBranchDefault(ctx, branchDefaultName, &github.BranchDefaultArgs{
 		Repository: repo.Name,
-		Branch:     pulumi.String(argsBranches.Default),
+		Branch:     pulumi.String("main"),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return nil, err
