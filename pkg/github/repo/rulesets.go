@@ -29,7 +29,7 @@ func createRulesetsSetDefaults(args *RulesetsArgs) {
 	}
 }
 
-func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsRulesets RulesetsArgs, prodEnvName string) error {
+func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github.Repository, argsRulesets RulesetsArgs, argsEnvs EnvsArgs) error {
 	rulesetBranchGlobalName := util.FormatResourceName(ctx, "Repository branch ruleset global")
 	_, err := github.NewRepositoryRuleset(ctx, rulesetBranchGlobalName, &github.RepositoryRulesetArgs{
 		Repository:  repo.Name,
@@ -134,7 +134,7 @@ func createRulesets(ctx *pulumi.Context, provider *github.Provider, repo *github
 				CheckResponseTimeoutMinutes:  pulumi.Int(5),
 			},
 			RequiredDeployments: github.RepositoryRulesetRulesRequiredDeploymentsArgs{
-				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{prodEnvName}),
+				RequiredDeploymentEnvironments: pulumi.ToStringArray([]string{argsEnvs.Prod}),
 			},
 			RequiredStatusChecks: github.RepositoryRulesetRulesRequiredStatusChecksArgs{
 				StrictRequiredStatusChecksPolicy: pulumi.Bool(true),

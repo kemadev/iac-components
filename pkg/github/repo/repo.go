@@ -57,8 +57,7 @@ func createRepositorySetDefaults(args *RepositoryArgs) error {
 func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo RepositoryArgs) (*github.Repository, error) {
 	repoName := util.FormatResourceName(ctx, "Repository")
 	repo, err := github.NewRepository(ctx, repoName, &github.RepositoryArgs{
-		// Keep name from the initial resource import
-		// Name:        pulumi.String(argsRepo.Name),
+		Name:                     pulumi.String(argsRepo.Name),
 		Description: pulumi.String(argsRepo.Description),
 		HomepageUrl: pulumi.String(argsRepo.HomepageUrl),
 		Topics: func() pulumi.StringArrayInput {
@@ -78,7 +77,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 
 		AllowSquashMerge:         pulumi.Bool(true),
 		SquashMergeCommitTitle:   pulumi.String("PR_TITLE"),
-		SquashMergeCommitMessage: pulumi.String("COMMIT_MESSAGES"),
+		SquashMergeCommitMessage: pulumi.String("PR_BODY"),
 		AllowMergeCommit:         pulumi.Bool(false),
 		AllowRebaseMerge:         pulumi.Bool(false),
 		AllowUpdateBranch:        pulumi.Bool(true),
@@ -91,6 +90,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 		HasDownloads:             pulumi.Bool(false),
 		Archived:                 pulumi.Bool(argsRepo.Archived),
 		WebCommitSignoffRequired: pulumi.Bool(false),
+		AutoInit:                 pulumi.Bool(true),
 
 		VulnerabilityAlerts: func() pulumi.Bool {
 			if argsRepo.Visibility == "public" {

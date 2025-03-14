@@ -44,11 +44,11 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	envs, err := createEnvironments(ctx, provider, repo, args.Envs)
+	_, err = createEnvironments(ctx, provider, repo, args.Envs)
 	if err != nil {
 		return err
 	}
-	err = createRulesets(ctx, provider, repo, args.Rulesets, envs.prod.Environment.ElementType().Name())
+	err = createRulesets(ctx, provider, repo, args.Rulesets, args.Envs)
 	if err != nil {
 		return err
 	}
