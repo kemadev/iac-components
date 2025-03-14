@@ -64,11 +64,11 @@ func Wrapper(ctx *pulumi.Context, args WrapperArgs) error {
 	if err != nil {
 		return err
 	}
-	err = createFiles(ctx, provider, repo, args.Files, targetBranch, repo.DefaultBranch.ElementType().Name())
+	err = createFiles(ctx, provider, repo, args.Files, targetBranch, args.Repository.defaultBranch)
 	if err != nil {
 		return err
 	}
-	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository, targetBranch, repo.DefaultBranch.ElementType().Name())
+	err = createTemplatedFiles(ctx, provider, repo, args.Files, args.Repository, targetBranch, args.Repository.defaultBranch)
 	if err != nil {
 		return err
 	}

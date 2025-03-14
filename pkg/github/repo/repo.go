@@ -22,6 +22,7 @@ type RepositoryArgs struct {
 	Name          string
 	Description   string
 	HomepageUrl   string
+	defaultBranch string
 	Topics        []string
 	Visibility    string
 	Archived      bool
@@ -31,8 +32,9 @@ type RepositoryArgs struct {
 }
 
 var RepositoryDefaultArgs = RepositoryArgs{
-	Visibility: "private",
-	IsTemplate: false,
+	Visibility:    "private",
+	IsTemplate:    false,
+	defaultBranch: "main",
 }
 
 func createRepositorySetDefaults(args *RepositoryArgs) error {
@@ -45,6 +47,9 @@ func createRepositorySetDefaults(args *RepositoryArgs) error {
 		args.Visibility = RepositoryDefaultArgs.Visibility
 	} else if args.Visibility == "CHANGEME" {
 		return fmt.Errorf("Repository Visibility must be changed from the default value")
+	}
+	if args.defaultBranch == "" {
+		args.defaultBranch = RepositoryDefaultArgs.defaultBranch
 	}
 	return nil
 }
@@ -115,7 +120,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 	defaulBranchName := util.FormatResourceName(ctx, "Repository default branch")
 	_, err = github.NewBranch(ctx, defaulBranchName, &github.BranchArgs{
 		Repository: repo.Name,
-		Branch:     pulumi.String("main"),
+		Branch:     pulumi.String(argsRepo.defaultBranch),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return nil, err
@@ -123,7 +128,7 @@ func createRepo(ctx *pulumi.Context, provider *github.Provider, argsRepo Reposit
 	branchDefaultName := util.FormatResourceName(ctx, "Repository default branch")
 	_, err = github.NewBranchDefault(ctx, branchDefaultName, &github.BranchDefaultArgs{
 		Repository: repo.Name,
-		Branch:     pulumi.String("main"),
+		Branch:     pulumi.String(argsRepo.defaultBranch),
 	}, pulumi.Provider(provider))
 	if err != nil {
 		return nil, err
