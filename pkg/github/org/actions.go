@@ -15,6 +15,14 @@ var ActionsDefaultActions = []string{
 	"kemadev/workflows-and-actions/.github/workflows/*",
 	"kemadev/workflows-and-actions/.github/actions/*",
 	// Actions from reusable workflows and actions
+	"actions/cache@*",
+	"actions/checkout@*",
+	"actions/download-artifact@*",
+	"actions/github-script@*",
+	"actions/labeler@*",
+	"actions/setup-go@*",
+	"actions/stale@*",
+	"actions/upload-artifact@*",
 	"anchore/sbom-action@*",
 	"anchore/scan-action@*",
 	"aws-actions/configure-aws-credentials@*",
@@ -25,11 +33,10 @@ var ActionsDefaultActions = []string{
 	"goreleaser/goreleaser-action@*",
 	"hadolint/hadolint-action@*",
 	"ibiqlik/action-yamllint@*",
+	"peter-evans/create-or-update-comment@*",
 	"pulumi/actions@*",
 	"semgrep/semgrep@*",
 	"trufflesecurity/trufflehog@*",
-	"peter-evans/create-or-update-comment@*",
-	"actions/github-script@*",
 }
 
 func createActionsSetDefaults(args *ActionsArgs) {
