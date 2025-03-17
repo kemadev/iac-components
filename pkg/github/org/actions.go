@@ -57,7 +57,7 @@ func createActions(ctx *pulumi.Context, provider *github.Provider, args ActionsA
 		AllowedActions:      pulumi.String("selected"),
 		EnabledRepositories: pulumi.String("all"),
 		AllowedActionsConfig: &github.ActionsOrganizationPermissionsAllowedActionsConfigArgs{
-			GithubOwnedAllowed: pulumi.Bool(true),
+			GithubOwnedAllowed: pulumi.Bool(false),
 			VerifiedAllowed:    pulumi.Bool(false),
 			PatternsAlloweds: func() pulumi.StringArray {
 				var patterns pulumi.StringArray
